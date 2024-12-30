@@ -1,10 +1,12 @@
-import { Button } from "./components/ui/button";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      Hello Featify!<Button>Test</Button>
-    </>
+    <Routes>
+      <Route path="/" element={<span>HOME</span>} />
+      <Route path="/profile" element={<span>PROFILE</span>} />
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 }
 
