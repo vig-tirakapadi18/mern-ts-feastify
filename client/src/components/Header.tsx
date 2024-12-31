@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
+import MobileNav from "./MobileNav";
 
 const Header: FC = (): React.JSX.Element => {
   return (
@@ -11,6 +12,10 @@ const Header: FC = (): React.JSX.Element => {
         >
           Feastify!🍔
         </Link>
+
+        <div className="md:hidden">
+          <MobileNav />
+        </div>
       </div>
     </div>
   );
