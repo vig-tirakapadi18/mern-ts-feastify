@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import MobileNav from "./MobileNav";
+import MainNav from "./MainNav";
 
 const Header: FC = (): React.JSX.Element => {
   return (
@@ -15,6 +16,10 @@ const Header: FC = (): React.JSX.Element => {
 
         <div className="md:hidden">
           <MobileNav />
+        </div>
+
+        <div className="hidden md:block">
+          <MainNav />
         </div>
       </div>
     </div>
