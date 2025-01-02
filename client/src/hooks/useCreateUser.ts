@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "react-query";
 
 interface ICreateUser {
@@ -8,10 +9,15 @@ interface ICreateUser {
 const VITE_API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL;
 
 export const useCreateUser = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
   const createUserRequest = async ({ auth0Id, email }: ICreateUser) => {
+    const accessToken = await getAccessTokenSilently();
+
     const response = await fetch(`${VITE_API_BASE_URL}/api/users/`, {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ auth0Id, email }),
