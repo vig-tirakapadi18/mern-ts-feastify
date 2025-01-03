@@ -15,3 +15,8 @@ export const ERROR_USER_NOT_FOUND: string = "User not found!";
 
 export const USER_CREATE_SUCCESS: string = "User created successfully!";
 export const USER_UPDATE_SUCCESS: string = "User updated successfully!";
+export const NAME_STRING: string = "Name must be a string!";
+export const ADDRESS_STRING: string = "Address must be a string!";
+export const CITY_STRING: string = "City must be a string!";
+export const COUNTRY_STRING: string = "Country must be a string!";
+export const EMAIL_STRING: string = "Email must be a valid email!";
