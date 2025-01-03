@@ -8,6 +8,9 @@ const AuthCallback = () => {
   const { createUser } = useCreateUser();
   const navigate = useNavigate();
 
+  console.log(user)
+  console.log(createUser)
+
   const hasCreatedUserRef = useRef<boolean>(false);
 
   useEffect(() => {
