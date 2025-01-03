@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { AppState, Auth0Provider, User } from "@auth0/auth0-react";
+import { Auth0Provider } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 interface IAuth0ProviderWithNavigateProps {
@@ -14,14 +14,13 @@ const Auth0ProviderWithNavigate: FC<IAuth0ProviderWithNavigateProps> = ({
   const domain = import.meta.env.VITE_AUTH0_DOMAIN as string;
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID as string;
   const redirectUri = import.meta.env.VITE_AUTH0_REDIRECT_URI as string;
+  const audience = import.meta.env.VITE_AUTH0_AUDIENCE as string;
 
-  const onRedirectCallback = (appState?: AppState, user?: User) => {
+  const onRedirectCallback = () => {
     navigate("/auth-callback");
-    console.log(user);
-    console.log("APP STATE", appState);
   };
 
-  if (!domain || !clientId || !redirectUri)
+  if (!domain || !clientId || !redirectUri || !audience)
     throw new Error("Unable to initialize Auth0!");
 
   return (
@@ -30,6 +29,7 @@ const Auth0ProviderWithNavigate: FC<IAuth0ProviderWithNavigateProps> = ({
       clientId={clientId}
       authorizationParams={{
         redirect_uri: redirectUri,
+        audience,
       }}
       onRedirectCallback={onRedirectCallback}
     >
