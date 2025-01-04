@@ -6,6 +6,13 @@ interface ICreateUser {
   email: string;
 }
 
+interface IUpdateUser {
+  name: string;
+  addressLine1: string;
+  city: string;
+  country: string;
+}
+
 const VITE_API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL;
 
 console.log(VITE_API_BASE_URL);
@@ -15,8 +22,6 @@ export const useCreateUser = () => {
 
   const createUserRequest = async (user: ICreateUser) => {
     const accessToken = await getAccessTokenSilently();
-    console.log(accessToken);
-    console.log(user);
 
     const response = await fetch(`${VITE_API_BASE_URL}/api/users`, {
       method: "POST",
@@ -26,8 +31,6 @@ export const useCreateUser = () => {
       },
       body: JSON.stringify(user),
     });
-
-    console.log(response);
 
     if (!response.ok) throw new Error("Failed to create user!");
   };
@@ -40,4 +43,33 @@ export const useCreateUser = () => {
   } = useMutation(createUserRequest);
 
   return { createUser, isLoading, isError, isSuccess };
+};
+
+export const useUpdateUser = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateUserRequest = async (formData: IUpdateUser) => {
+    const accessToken = await getAccessTokenSilently();
+
+    const response = await fetch(`${VITE_API_BASE_URL}/api/users/update-user`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) throw new Error("Failed to update user!");
+  };
+
+  const {
+    mutateAsync: updateUser,
+    isLoading,
+    isSuccess,
+    isError,
+    reset,
+  } = useMutation(updateUserRequest);
+
+  return { updateUser, isLoading, isSuccess, isError, reset };
 };
