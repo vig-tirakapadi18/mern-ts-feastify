@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "react-query";
+import { toast } from "sonner";
 
 interface ICreateUser {
   auth0Id: string;
@@ -42,6 +43,9 @@ export const useCreateUser = () => {
     isSuccess,
   } = useMutation(createUserRequest);
 
+  if (isSuccess) toast.success("User created successfully!");
+  if (isError) toast.error("Failed to create user!");
+
   return { createUser, isLoading, isError, isSuccess };
 };
 
@@ -68,8 +72,15 @@ export const useUpdateUser = () => {
     isLoading,
     isSuccess,
     isError,
+    error,
     reset,
   } = useMutation(updateUserRequest);
 
-  return { updateUser, isLoading, isSuccess, isError, reset };
+  if (isSuccess) toast.success("User updated successfully!");
+  if (isError || error) {
+    toast.error("Failed to update user!");
+    reset();
+  }
+
+  return { updateUser, isLoading, reset };
 };
