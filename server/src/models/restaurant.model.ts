@@ -15,7 +15,7 @@ const restaurantSchema = new Schema(
     city: { type: String, required: true },
     country: { type: String, required: true },
     imgUrl: { type: String },
-    deliveyPrice: { type: Number, required: true },
+    deliveryPrice: { type: Number, required: true },
     estimatedDeliveryTime: { type: Number, required: true },
     cuisines: [{ type: String, required: true }],
     menuItems: [menuItemSchema],

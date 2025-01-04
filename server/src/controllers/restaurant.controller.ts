@@ -12,7 +12,7 @@ import { Types } from "mongoose";
 
 export const createRestaurant = async (req: Request, res: Response) => {
   try {
-    const existingRestaurant = await Restaurant.find({ user: req.userId });
+    const existingRestaurant = await Restaurant.findOne({ user: req.userId });
 
     if (existingRestaurant) {
       res.status(CODE_409).json({ message: ERROR_USER_RESTAURANT_EXISTS });
@@ -29,15 +29,14 @@ export const createRestaurant = async (req: Request, res: Response) => {
       ...req.body,
       imgUrl: uploadResponse.url,
       user: new Types.ObjectId(req.userId),
+      lastUpdated: new Date(),
     });
 
-    res
-      .status(CODE_201)
-      .json({
-        success: true,
-        newRestaurant,
-        message: RESTAURANT_CREATE_SUCCESS,
-      });
+    res.status(CODE_201).json({
+      success: true,
+      newRestaurant,
+      message: RESTAURANT_CREATE_SUCCESS,
+    });
   } catch (error) {
     console.log("CREATE REST", error);
     res.status(500).json({ message: ERROR_INTERNAL_SERVER_ERROR });
