@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FC } from "react";
 import ManageRestaurantForm from "../components/forms/Restaurant/ManageRestaurantForm";
 
-const ManageRestaurant = () => {
+const ManageRestaurant: FC = (): React.JSX.Element => {
   return <ManageRestaurantForm />;
 };
 

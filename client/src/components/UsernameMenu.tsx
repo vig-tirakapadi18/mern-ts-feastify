@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 
-const UsernameMenu = () => {
+const UsernameMenu: FC = (): React.JSX.Element => {
   const { user, logout } = useAuth0();
 
   return (
@@ -20,7 +20,7 @@ const UsernameMenu = () => {
         {user?.picture ? (
           <img
             src={user.picture}
-            alt={user?.given_name || "profile"}
+            alt={user?.given_name ?? "profile"}
             className="w-[40px] h-[40px] rounded-full"
           />
         ) : (
