@@ -83,7 +83,7 @@ export const getLoggedInUser = async (req: Request, res: Response) => {
 
     res.status(CODE_200).json({
       success: true,
-      data: { user: existingUser },
+      existingUser,
       message: USER_GET_SUCCESS,
     });
   } catch (error) {
