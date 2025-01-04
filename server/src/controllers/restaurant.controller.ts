@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   CODE_201,
   CODE_409,
+  CODE_500,
   ERROR_INTERNAL_SERVER_ERROR,
   ERROR_USER_RESTAURANT_EXISTS,
   RESTAURANT_CREATE_SUCCESS,
@@ -39,6 +40,6 @@ export const createRestaurant = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log("CREATE REST", error);
-    res.status(500).json({ message: ERROR_INTERNAL_SERVER_ERROR });
+    res.status(CODE_500).json({ message: ERROR_INTERNAL_SERVER_ERROR });
   }
 };
