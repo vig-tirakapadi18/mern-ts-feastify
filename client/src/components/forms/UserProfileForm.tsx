@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +14,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import LoadingButton from "../LoadingButton";
+import { IUser } from "../../types";
 
 const formSchema = z.object({
   email: z.string().optional(),
@@ -28,15 +29,22 @@ type UserFormData = z.infer<typeof formSchema>;
 interface IUserProfileFormProps {
   onSave: (userProfileData: UserFormData) => void;
   isLoading: boolean;
+  currentLoggedInUser: IUser;
 }
 
 const UserProfileForm: FC<IUserProfileFormProps> = ({
   isLoading,
   onSave,
+  currentLoggedInUser,
 }: IUserProfileFormProps): React.JSX.Element => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: currentLoggedInUser.existingUser,
   });
+
+  useEffect(() => {
+    form.reset(currentLoggedInUser.existingUser);
+  }, [currentLoggedInUser.existingUser, form]);
 
   return (
     <Form {...form}>

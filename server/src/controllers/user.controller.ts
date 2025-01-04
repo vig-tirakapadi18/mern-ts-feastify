@@ -4,11 +4,13 @@ import {
   CODE_200,
   CODE_400,
   CODE_404,
+  ERROR_GETTING_USER,
   ERROR_USER_CREATE,
   ERROR_USER_EXISTS,
   ERROR_USER_NOT_FOUND,
   ERROR_USER_UPDATE,
   USER_CREATE_SUCCESS,
+  USER_GET_SUCCESS,
   USER_UPDATE_SUCCESS,
 } from "../utils/constants";
 
@@ -67,5 +69,25 @@ export const updateUser = async (req: Request, res: Response) => {
     console.log(error);
     res.status(CODE_400).json({ message: ERROR_USER_UPDATE });
     return;
+  }
+};
+
+export const getLoggedInUser = async (req: Request, res: Response) => {
+  try {
+    const existingUser = await User.findOne({ _id: req.userId });
+
+    if (!existingUser) {
+      res.status(CODE_404).json({ message: ERROR_USER_NOT_FOUND });
+      return;
+    }
+
+    res.status(CODE_200).json({
+      success: true,
+      existingUser,
+      message: USER_GET_SUCCESS,
+    });
+  } catch (error) {
+    console.log("GET LOGGED IN USER", error);
+    res.status(CODE_404).json({ message: ERROR_GETTING_USER });
   }
 };
