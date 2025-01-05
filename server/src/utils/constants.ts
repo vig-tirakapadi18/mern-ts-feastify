@@ -16,6 +16,8 @@ export const ERROR_USER_NOT_FOUND: string = "User not found!";
 export const ERROR_GETTING_USER: string = "Error getting user!";
 export const ERROR_USER_RESTAURANT_EXISTS: string =
   "Restaurant for this user already exists!";
+export const ERROR_RESTAURANT_NOT_FOUND: string =
+  "Restaurant for this user not found!";
 
 export const USER_CREATE_SUCCESS: string = "User created successfully!";
 export const USER_UPDATE_SUCCESS: string = "User updated successfully!";
@@ -27,3 +29,5 @@ export const COUNTRY_STRING: string = "Country must be a string!";
 export const EMAIL_STRING: string = "Email must be a valid email!";
 export const RESTAURANT_CREATE_SUCCESS: string =
   "Restaurant created successfully!";
+export const RESTAURANT_GET_SUCCESS: string =
+  "Restaurant retrieved successfully!";

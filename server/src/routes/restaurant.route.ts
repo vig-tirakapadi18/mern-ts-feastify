@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createRestaurant } from "../controllers/restaurant.controller";
+import { createRestaurant, getLoggedInUserRestaurant } from "../controllers/restaurant.controller";
 import { upload } from "../config/multer";
 import { jwtCheck, jwtParse } from "../middlewares/auth";
 import { validateRestaurantRequest } from "../middlewares/validation";
@@ -7,7 +7,7 @@ import { validateRestaurantRequest } from "../middlewares/validation";
 const router = Router();
 
 router
-  .route("/")
+  .route("/").get(jwtCheck, jwtParse, getLoggedInUserRestaurant)
   .post(
     upload.single("imgFile"),
     validateRestaurantRequest,
