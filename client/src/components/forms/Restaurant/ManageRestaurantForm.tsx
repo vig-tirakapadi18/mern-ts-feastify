@@ -7,6 +7,7 @@ import { formSchema } from "../../../models/RestaurantSchema";
 import DetailsSection from "./DetailsSection";
 import { Separator } from "../../ui/separator";
 import CuisinesSection from "./CuisinesSection";
+import MenuSection from "./MenuSection";
 
 type restaurantFormData = z.infer<typeof formSchema>;
 
@@ -40,6 +41,8 @@ const ManageRestaurantForm: FC = ({
         <DetailsSection />
         <Separator />
         <CuisinesSection />
+        <Separator />
+        <MenuSection />
       </form>
     </Form>
   );
