@@ -7,6 +7,10 @@ import { formSchema } from "../../../models/RestaurantSchema";
 import DetailsSection from "./DetailsSection";
 import { Separator } from "../../ui/separator";
 import CuisinesSection from "./CuisinesSection";
+import MenuSection from "./MenuSection";
+import ImageSection from "./ImageSection";
+import LoadingButton from "../../LoadingButton";
+import { Button } from "../../ui/button";
 
 type restaurantFormData = z.infer<typeof formSchema>;
 
@@ -40,6 +44,21 @@ const ManageRestaurantForm: FC = ({
         <DetailsSection />
         <Separator />
         <CuisinesSection />
+        <Separator />
+        <MenuSection />
+        <Separator />
+        <ImageSection />
+
+        {isLoading ? (
+          <LoadingButton />
+        ) : (
+          <Button
+            type="submit"
+            className="bg-emerald-500 text-md hover:bg-emerald-500 hover:opacity-95"
+          >
+            Create Menu
+          </Button>
+        )}
       </form>
     </Form>
   );
