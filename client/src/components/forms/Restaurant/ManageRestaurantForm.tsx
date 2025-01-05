@@ -12,18 +12,18 @@ import ImageSection from "./ImageSection";
 import LoadingButton from "../../LoadingButton";
 import { Button } from "../../ui/button";
 
-type restaurantFormData = z.infer<typeof formSchema>;
+type RestaurantFormData = z.infer<typeof formSchema>;
 
-interface IManageRestaurantForm {
-  onSave: (restaurantFormData: FormData) => void;
+interface IManageRestaurantFormProps {
+  onSave: (RestaurantFormData: FormData) => void;
   isLoading: boolean;
 }
 
-const ManageRestaurantForm: FC = ({
+const ManageRestaurantForm: FC<IManageRestaurantFormProps> = ({
   isLoading,
   onSave,
-}: IManageRestaurantForm): React.JSX.Element => {
-  const form = useForm<restaurantFormData>({
+}: IManageRestaurantFormProps): React.JSX.Element => {
+  const form = useForm<RestaurantFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       cuisines: [],
@@ -31,8 +31,34 @@ const ManageRestaurantForm: FC = ({
     },
   });
 
-  const onSubmit = (formDataJson: restaurantFormData) => {
-    // TODO: converting formDataJson to a new FormData object
+  const onSubmit = (formDataJson: RestaurantFormData) => {
+    const formData = new FormData();
+
+    formData.append("restaurantName", formDataJson.restaurantName);
+    formData.append("city", formDataJson.city);
+    formData.append("country", formDataJson.country);
+    formData.append(
+      "deliveryPrice",
+      (formDataJson.deliveryPrice * 100).toString()
+    );
+    formData.append(
+      "estimatedDeliveryTime",
+      formDataJson.estimatedDeliveryTime.toString()
+    );
+    formDataJson.cuisines.forEach((cuisine, idx) => {
+      formData.append(`cuisines[${idx}]`, cuisine);
+    });
+    formDataJson.menuItems.forEach((menuItem, idx) => {
+      formData.append(`menuItems[${idx}][name]`, menuItem.name);
+      formData.append(
+        `menuItems[${idx}][price]`,
+        (menuItem.price * 100).toString()
+      );
+    });
+
+    if (formDataJson.imgFile) formData.append("imgFile", formDataJson.imgFile);
+
+    onSave(formData);
   };
 
   return (

@@ -8,3 +8,26 @@ export interface IUser {
     country: string;
   };
 }
+
+export interface IMenuItem {
+  name: string;
+  price: number;
+}
+
+export interface IRestaurant {
+  success: boolean;
+  message: string;
+  newRestaurant: {
+    _id: string;
+    user: string;
+    restaurantName: string;
+    city: string;
+    country: string;
+    deliveryPrice: number;
+    estimatedDeliveryTime: number;
+    cuisines: string[];
+    menuItems: IMenuItem[];
+    imgUrl: string;
+    lastUpdated: string;
+  };
+}
