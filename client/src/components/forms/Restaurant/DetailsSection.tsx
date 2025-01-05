@@ -75,7 +75,7 @@ const DetailsSection: FC = (): React.JSX.Element => {
           <FormItem className="max-w-[25%]">
             <FormLabel>Delivery Price (Rs)</FormLabel>
             <FormControl>
-              <Input {...field} className="bg-white" placeholder="1.50" />
+              <Input {...field} className="bg-white" placeholder="150" />
             </FormControl>
 
             <FormMessage />

@@ -18,34 +18,34 @@ const MenuSection: FC = (): React.JSX.Element => {
       <div className="">
         <h2 className="text-2xl font-bold">Menu</h2>
         <FormDescription>
-          Create your men and give each item a name and a price.
+          Create your menu and give each item a name and a price.
         </FormDescription>
-
-        <FormField
-          control={control}
-          name="menuItems"
-          render={() => (
-            <FormItem className="flex flex-col gap-2">
-              {fields.map((_, idx) => (
-                <MenuItemInput
-                  key={crypto.randomUUID()}
-                  index={idx}
-                  removeMenuItem={() => remove(idx)}
-                />
-              ))}
-            </FormItem>
-          )}
-        />
-
-        <Button
-          type="button"
-          className="mt-3 bg-[dodgerblue] hover:bg-[dodgerblue] hover:opacity-95"
-          onClick={() => append({ name: "", price: "" })}
-        >
-          <MdFastfood />
-          Add Menu Item
-        </Button>
       </div>
+
+      <FormField
+        control={control}
+        name="menuItems"
+        render={() => (
+          <FormItem className="flex flex-col gap-2">
+            {fields.map((_, idx) => (
+              <MenuItemInput
+                key={crypto.randomUUID()}
+                index={idx}
+                removeMenuItem={() => remove(idx)}
+              />
+            ))}
+          </FormItem>
+        )}
+      />
+
+      <Button
+        type="button"
+        className="mt-3 bg-[dodgerblue] hover:bg-[dodgerblue] hover:opacity-95"
+        onClick={() => append({ name: "", price: "" })}
+      >
+        <MdFastfood />
+        Add Menu Item
+      </Button>
     </section>
   );
 };

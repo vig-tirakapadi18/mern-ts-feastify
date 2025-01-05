@@ -9,13 +9,13 @@ import userRoutes from "./src/routes/user.route";
 import restaurantRoutes from "./src/routes/restaurant.route";
 
 const app = express();
+app.use(cors());
 
 // Connect to MongoDB and Cloudinary databases before starting the server
 connectToDB();
 connectToCloudinary();
 
 app.use(express.json());
-app.use(cors());
 
 app.use("/api/users", userRoutes);
 app.use("/api/restaurants", restaurantRoutes);
