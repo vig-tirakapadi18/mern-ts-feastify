@@ -2,10 +2,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React, { FC } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoutes: FC = (): React.JSX.Element => {
-  const { isAuthenticated } = useAuth0();
+const ProtectedRoutes: FC = (): React.JSX.Element | null => {
+  const { isAuthenticated, isLoading } = useAuth0();
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
+  if (isLoading) return null;
+
+  if (isAuthenticated) return <Outlet />;
+
+  return <Navigate to="/" replace />;
 };
 
 export default ProtectedRoutes;
