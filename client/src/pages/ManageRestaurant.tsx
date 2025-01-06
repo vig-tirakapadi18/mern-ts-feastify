@@ -1,12 +1,26 @@
 import React, { FC } from "react";
 import ManageRestaurantForm from "../components/forms/Restaurant/ManageRestaurantForm";
-import { useCreateRestaurant } from "../api/RestaurantApi";
+import {
+  useCreateRestaurant,
+  useGetLoggedInUserRestaurant,
+  useUpdateRestaurant,
+} from "../api/RestaurantApi";
 
 const ManageRestaurant: FC = (): React.JSX.Element => {
-  const { createRestaurant, isLoading } = useCreateRestaurant();
+  const { createRestaurant, isLoading: isCreateLoading } =
+    useCreateRestaurant();
+  const { restaurant } = useGetLoggedInUserRestaurant();
+  const { updateRestaurant, isLoading: isUpdateLoading } =
+    useUpdateRestaurant();
+
+  const isEditing = !!restaurant;
 
   return (
-    <ManageRestaurantForm onSave={createRestaurant} isLoading={isLoading} />
+    <ManageRestaurantForm
+      onSave={isEditing ? updateRestaurant : createRestaurant}
+      isLoading={isCreateLoading || isUpdateLoading}
+      restaurant={restaurant}
+    />
   );
 };
 
