@@ -8,9 +8,12 @@ import {
 } from "../../ui/form";
 import { Input } from "../../ui/input";
 import { useFormContext } from "react-hook-form";
+import { AspectRatio } from "../../ui/aspect-ratio";
 
 const ImageSection: FC = (): React.JSX.Element => {
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+
+  const existingImgUrl = watch("imgUrl");
 
   return (
     <section>
@@ -22,7 +25,17 @@ const ImageSection: FC = (): React.JSX.Element => {
         </FormDescription>
       </div>
 
-      <div className="flex flex-col gap-8 w-[50%]">
+      <div className="flex flex-col gap-8 md:w-[50%]">
+        {existingImgUrl && (
+          <AspectRatio ratio={16 / 9}>
+            <img
+              src={existingImgUrl}
+              alt="restaurant food"
+              className="rounded-md object-cover h-full w-full"
+            />
+          </AspectRatio>
+        )}
+
         <FormField
           control={control}
           name="imgFile"

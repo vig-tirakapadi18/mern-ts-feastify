@@ -17,7 +17,7 @@ export interface IMenuItem {
 export interface IRestaurant {
   success: boolean;
   message: string;
-  newRestaurant: {
+  restaurant: {
     _id: string;
     user: string;
     restaurantName: string;
