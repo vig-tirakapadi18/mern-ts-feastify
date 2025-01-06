@@ -9,7 +9,7 @@ const Home: FC = (): React.JSX.Element => {
 
   const handleSearchSubmit = (searchFormValues: SearchForm) => {
     navigate({
-      pathname: `/api/search/${searchFormValues.searchQuery}`,
+      pathname: `/search/${searchFormValues.searchQuery}`,
     });
   };
 

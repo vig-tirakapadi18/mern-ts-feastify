@@ -11,12 +11,12 @@ import MenuSection from "./MenuSection";
 import ImageSection from "./ImageSection";
 import LoadingButton from "../../LoadingButton";
 import { Button } from "../../ui/button";
-import { IRestaurant } from "../../../types";
+import { IRestaurantResponse } from "../../../types";
 
 type RestaurantFormData = z.infer<typeof formSchema>;
 
 interface IManageRestaurantFormProps {
-  restaurant?: IRestaurant;
+  restaurant?: IRestaurantResponse;
   onSave: (RestaurantFormData: FormData) => void;
   isLoading: boolean;
 }
