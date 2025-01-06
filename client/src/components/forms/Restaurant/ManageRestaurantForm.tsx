@@ -106,7 +106,7 @@ const ManageRestaurantForm: FC<IManageRestaurantFormProps> = ({
             type="submit"
             className="bg-emerald-500 text-md hover:bg-emerald-500 hover:opacity-95"
           >
-            Create Menu
+            {restaurant?.restaurant.restaurantName ? "Update" : "Create"} Menu
           </Button>
         )}
       </form>

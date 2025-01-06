@@ -3,14 +3,24 @@ import ManageRestaurantForm from "../components/forms/Restaurant/ManageRestauran
 import {
   useCreateRestaurant,
   useGetLoggedInUserRestaurant,
+  useUpdateRestaurant,
 } from "../api/RestaurantApi";
 
 const ManageRestaurant: FC = (): React.JSX.Element => {
-  const { createRestaurant, isLoading } = useCreateRestaurant();
+  const { createRestaurant, isLoading: isCreateLoading } =
+    useCreateRestaurant();
   const { restaurant } = useGetLoggedInUserRestaurant();
+  const { updateRestaurant, isLoading: isUpdateLoading } =
+    useUpdateRestaurant();
+
+  const isEditing = !!restaurant;
 
   return (
-    <ManageRestaurantForm onSave={createRestaurant} isLoading={isLoading} restaurant={restaurant} />
+    <ManageRestaurantForm
+      onSave={isEditing ? updateRestaurant : createRestaurant}
+      isLoading={isCreateLoading || isUpdateLoading}
+      restaurant={restaurant}
+    />
   );
 };
 

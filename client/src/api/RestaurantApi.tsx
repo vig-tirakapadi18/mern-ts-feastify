@@ -66,3 +66,42 @@ export const useGetLoggedInUserRestaurant = () => {
 
   return { restaurant, isLoading };
 };
+
+export const useUpdateRestaurant = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateRestaurantRequest = async (
+    restaurantFormData: FormData
+  ): Promise<IRestaurant> => {
+    const accessToken = await getAccessTokenSilently();
+
+    const response = await fetch(
+      `${VITE_API_BASE_URL}/api/restaurants/update-restaurant`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: restaurantFormData,
+      }
+    );
+
+    if (!response.ok) throw new Error("Error updating the restaurant!");
+
+    return response.json();
+  };
+
+  const {
+    mutate: updateRestaurant,
+    isError,
+    isSuccess,
+    isLoading,
+    error,
+  } = useMutation(updateRestaurantRequest);
+
+  if (isSuccess) toast.success("Successfully updated the restaurant!");
+
+  if (isError || error) toast.error("Failed to update the restaurant!");
+
+  return { updateRestaurant, isLoading };
+};
