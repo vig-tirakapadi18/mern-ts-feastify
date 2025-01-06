@@ -31,3 +31,5 @@ export const RESTAURANT_CREATE_SUCCESS: string =
   "Restaurant created successfully!";
 export const RESTAURANT_GET_SUCCESS: string =
   "Restaurant retrieved successfully!";
+export const RESTAURANT_UPDATE_SUCCESS: string =
+  "Restaurant updated successfully!";
