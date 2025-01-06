@@ -30,7 +30,7 @@ export const createRestaurant = async (req: Request, res: Response) => {
 
     const uploadResponse = await cloudinary.uploader.upload(dataURI);
 
-    const newRestaurant = await Restaurant.create({
+    const restaurant = await Restaurant.create({
       ...req.body,
       imgUrl: uploadResponse.url,
       user: new Types.ObjectId(req.userId),
@@ -39,7 +39,7 @@ export const createRestaurant = async (req: Request, res: Response) => {
 
     res.status(CODE_201).json({
       success: true,
-      newRestaurant,
+      restaurant,
       message: RESTAURANT_CREATE_SUCCESS,
     });
   } catch (error) {
@@ -56,13 +56,19 @@ export const getLoggedInUserRestaurant = async (
     const restaurant = await Restaurant.findOne({ user: req.userId });
 
     if (!restaurant) {
-      res.status(CODE_404).json({ success: false, message: ERROR_RESTAURANT_NOT_FOUND });
+      res
+        .status(CODE_404)
+        .json({ success: false, message: ERROR_RESTAURANT_NOT_FOUND });
       return;
     }
 
-    res.status(CODE_200).json({ success: true, restaurant, message: RESTAURANT_GET_SUCCESS });
+    res
+      .status(CODE_200)
+      .json({ success: true, restaurant, message: RESTAURANT_GET_SUCCESS });
   } catch (error) {
     console.log("GET RESTAURANT", error);
-    res.status(CODE_500).json({ success: false, message: ERROR_INTERNAL_SERVER_ERROR });
+    res
+      .status(CODE_500)
+      .json({ success: false, message: ERROR_INTERNAL_SERVER_ERROR });
   }
 };
