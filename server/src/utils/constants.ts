@@ -18,6 +18,7 @@ export const ERROR_USER_RESTAURANT_EXISTS: string =
   "Restaurant for this user already exists!";
 export const ERROR_RESTAURANT_NOT_FOUND: string =
   "Restaurant for this user not found!";
+export const ERROR_SEARCH_RESTAURANTS: string = "Unable to search restaurants!";
 
 export const USER_CREATE_SUCCESS: string = "User created successfully!";
 export const USER_UPDATE_SUCCESS: string = "User updated successfully!";

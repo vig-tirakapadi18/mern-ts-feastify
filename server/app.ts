@@ -7,6 +7,7 @@ import { connectToCloudinary } from "./src/db/connectToCloudinary";
 // Routes
 import userRoutes from "./src/routes/user.route";
 import restaurantRoutes from "./src/routes/restaurant.route";
+import searchRoutes from "./src/routes/search.route";
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,7 @@ app.use(express.json());
 
 app.use("/api/users", userRoutes);
 app.use("/api/restaurants", restaurantRoutes);
+app.use("/api/search", searchRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
