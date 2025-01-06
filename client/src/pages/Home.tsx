@@ -1,10 +1,18 @@
 import React, { FC } from "react";
 import mobileResponsive from "../assets/mobile.png";
 import appDownload from "../assets/appDownload.png";
-import { FaSearch } from "react-icons/fa";
-import { Button } from "../components/ui/button";
+import SearchBar, { SearchForm } from "../components/SearchBar";
+import { useNavigate } from "react-router-dom";
 
 const Home: FC = (): React.JSX.Element => {
+  const navigate = useNavigate();
+
+  const handleSearchSubmit = (searchFormValues: SearchForm) => {
+    navigate({
+      pathname: `/search/${searchFormValues.searchQuery}`,
+    });
+  };
+
   return (
     <div className="flex flex-col gap-12">
       <div className="bg-white rounded-lg shadow-md py-8 flex flex-col gap-5 text-center -mt-20">
@@ -14,11 +22,10 @@ const Home: FC = (): React.JSX.Element => {
 
         <span className="text-xl">Food is just a click away!</span>
 
-        <div className="border-gray-200 border-2 lg:mx-40 md:mx-28 sm:mx-10 flex justify-between items-center px-6 py-4 rounded-full">
-          <FaSearch size={28} color="#10b981" />
-          <input type="text" className="w-full mx-4 h-full text-xl" />
-          <Button className="bg-[#10b981] w-28 text-lg rounded-full hover:bg-emerald-500 hover:opacity-95">Search</Button>
-        </div>
+        <SearchBar
+          placeHolder="Search by City or Town"
+          onSubmit={handleSearchSubmit}
+        />
       </div>
 
       <div className="grid md:grid-cols-2 gap-5">

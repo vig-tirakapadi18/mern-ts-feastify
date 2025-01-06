@@ -15,19 +15,34 @@ export interface IMenuItem {
 }
 
 export interface IRestaurant {
+  _id: string;
+  user: string;
+  restaurantName: string;
+  city: string;
+  country: string;
+  deliveryPrice: number;
+  estimatedDeliveryTime: number;
+  cuisines: string[];
+  menuItems: IMenuItem[];
+  imgUrl: string;
+  lastUpdated: string;
+}
+
+export interface IRestaurantResponse {
   success: boolean;
   message: string;
-  restaurant: {
-    _id: string;
-    user: string;
-    restaurantName: string;
-    city: string;
-    country: string;
-    deliveryPrice: number;
-    estimatedDeliveryTime: number;
-    cuisines: string[];
-    menuItems: IMenuItem[];
-    imgUrl: string;
-    lastUpdated: string;
+  restaurant: IRestaurant;
+}
+
+export interface ISearchRestaurants {
+  success: boolean;
+  message: string;
+  response: {
+    data: IRestaurant[];
+    pagination: {
+      totalRestaurants: number;
+      page: number;
+      pages: number;
+    };
   };
 }

@@ -2,14 +2,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { VITE_API_BASE_URL } from "./UserApi";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
-import { IRestaurant } from "../types";
+import { IRestaurantResponse } from "../types";
 
 export const useCreateRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
 
   const createRestauantRequest = async (
     restaurantFormData: FormData
-  ): Promise<IRestaurant> => {
+  ): Promise<IRestaurantResponse> => {
     console.log("R DATA", JSON.stringify(restaurantFormData));
     const accessToken = await getAccessTokenSilently();
 
@@ -44,7 +44,7 @@ export const useCreateRestaurant = () => {
 export const useGetLoggedInUserRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const getRestauranRequest = async (): Promise<IRestaurant> => {
+  const getRestauranRequest = async (): Promise<IRestaurantResponse> => {
     const accessToken = await getAccessTokenSilently();
 
     const response = await fetch(`${VITE_API_BASE_URL}/api/restaurants`, {
@@ -72,7 +72,7 @@ export const useUpdateRestaurant = () => {
 
   const updateRestaurantRequest = async (
     restaurantFormData: FormData
-  ): Promise<IRestaurant> => {
+  ): Promise<IRestaurantResponse> => {
     const accessToken = await getAccessTokenSilently();
 
     const response = await fetch(
