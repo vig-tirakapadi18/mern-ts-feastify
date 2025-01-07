@@ -12,6 +12,7 @@ export const useSearchRestaurants = (
     params.set("searchQuery", searchState.searchQuery);
     params.set("page", searchState.page.toString());
     params.set("selectedCuisines", searchState.selectedCuisines.join(","));
+    params.set("searchOption", searchState.sortOption);
 
     const response = await fetch(
       `${VITE_API_BASE_URL}/api/search/${city}?${params.toString()}`

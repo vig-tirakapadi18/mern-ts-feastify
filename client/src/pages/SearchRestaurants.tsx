@@ -8,11 +8,13 @@ import SearchResultCard from "../components/SearchResultCard";
 import SearchBar, { SearchForm } from "../components/SearchBar";
 import PaginationSelector from "../components/PaginationSelector";
 import CuisineFilter from "../components/CuisineFilter";
+import SortOptionDropdown from "../components/SortOptionDropdown";
 
 export interface ISearchState {
   searchQuery: string;
   page: number;
   selectedCuisines: string[];
+  sortOption: string;
 }
 
 const SearchRestaurants: FC = (): React.JSX.Element => {
@@ -22,6 +24,7 @@ const SearchRestaurants: FC = (): React.JSX.Element => {
     searchQuery: "",
     page: 1,
     selectedCuisines: [],
+    sortOption: "bestMatch",
   });
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
@@ -69,6 +72,14 @@ const SearchRestaurants: FC = (): React.JSX.Element => {
     }));
   };
 
+  const handleSetSortOption = (sortOption: string) => {
+    setSearchState((prevState) => ({
+      ...prevState,
+      sortOption,
+      page: 1,
+    }));
+  };
+
   return (
     <section className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5">
       <div className="" id="cuisines-list">
@@ -88,11 +99,17 @@ const SearchRestaurants: FC = (): React.JSX.Element => {
           searchQuery={searchState.searchQuery}
         />
 
-        <SearchResultInfo
-          total={restaurants.response.pagination.totalRestaurants}
-          city={city}
-        />
+        <div className="flex justify-between flex-col gap-3 lg:flex-row">
+          <SearchResultInfo
+            total={restaurants.response.pagination.totalRestaurants}
+            city={city}
+          />
 
+          <SortOptionDropdown
+            sortOption={searchState.sortOption}
+            onChange={(value) => handleSetSortOption(value)}
+          />
+        </div>
         {restaurants.response.data.map((restaurant) => (
           <SearchResultCard key={crypto.randomUUID()} restaurant={restaurant} />
         ))}
