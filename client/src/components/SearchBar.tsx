@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Button } from "./ui/button";
 import { searchSchema } from "../models/SearchSchema";
@@ -14,16 +14,25 @@ interface ISearchBarProps {
   onSubmit: (formData: SearchForm) => void;
   placeHolder: string;
   onReset?: () => void;
+  searchQuery?: string;
 }
 
 const SearchBar: FC<ISearchBarProps> = ({
   onSubmit,
   placeHolder,
   onReset,
+  searchQuery,
 }: ISearchBarProps): React.JSX.Element => {
   const form = useForm<SearchForm>({
     resolver: zodResolver(searchSchema),
+    defaultValues: {
+      searchQuery: searchQuery || "",
+    },
   });
+
+  useEffect(() => {
+    form.reset({ searchQuery });
+  }, [form, searchQuery]);
 
   const handleReset = () => {
     form.reset({
@@ -57,29 +66,19 @@ const SearchBar: FC<ISearchBarProps> = ({
             </FormItem>
           )}
         />
-        {form.formState.isDirty && (
-          <Button
-            type="button"
-            variant="outline"
-            className="rounded-full text-lg border-emerald-500 mx-2 py-2"
-            onClick={handleReset}
-          >
-            Clear
-          </Button>
-        )}
+        <Button
+          type="button"
+          variant="outline"
+          className="rounded-full text-lg border-emerald-500 mx-2 py-2"
+          onClick={handleReset}
+        >
+          Reset
+        </Button>
         <Button className="bg-[#10b981] w-28 text-lg rounded-full hover:bg-emerald-500 hover:opacity-95">
           Search
         </Button>
       </form>
     </Form>
-
-    // <div className="border-gray-200 border-2 lg:mx-40 md:mx-28 sm:mx-10 flex justify-between items-center px-6 py-4 rounded-full">
-    //   <FaSearch size={28} color="#10b981" />
-    //   <input type="text" className="w-full mx-4 h-full text-xl" />
-    //   <Button className="bg-[#10b981] w-28 text-lg rounded-full hover:bg-emerald-500 hover:opacity-95">
-    //     Search
-    //   </Button>
-    // </div>
   );
 };
 
