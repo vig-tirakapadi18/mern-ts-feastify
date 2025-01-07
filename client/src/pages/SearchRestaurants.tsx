@@ -4,6 +4,7 @@ import { useSearchRestaurants } from "../api/SearchApi";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { HiOutlineEmojiSad } from "react-icons/hi";
 import SearchResultInfo from "../components/SearchResultInfo";
+import SearchResultCard from "../components/SearchResultCard";
 
 const SearchRestaurants: FC = (): React.JSX.Element => {
   const { city } = useParams();
@@ -31,6 +32,10 @@ const SearchRestaurants: FC = (): React.JSX.Element => {
           total={restaurants.response.pagination.totalRestaurants}
           city={city}
         />
+
+        {restaurants.response.data.map((restaurant) => (
+          <SearchResultCard key={crypto.randomUUID()} restaurant={restaurant} />
+        ))}
       </div>
     </section>
     // <div>
