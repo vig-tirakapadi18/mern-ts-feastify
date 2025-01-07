@@ -21,7 +21,6 @@ const SearchResultInfo: FC<ISearchResultInfo> = ({
           Change Location
         </Link>
       </span>
-      Insert sort dropdown here!
     </section>
   );
 };
