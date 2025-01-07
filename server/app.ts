@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import { connectToDB } from "./src/db/connectToDB";
@@ -17,6 +17,10 @@ connectToDB();
 connectToCloudinary();
 
 app.use(express.json());
+
+app.get("/health", (req, res: Response) => {
+  res.json({ message: "Server health is GREAT!" });
+});
 
 app.use("/api/users", userRoutes);
 app.use("/api/restaurants", restaurantRoutes);
