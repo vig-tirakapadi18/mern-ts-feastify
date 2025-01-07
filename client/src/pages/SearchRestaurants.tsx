@@ -9,6 +9,7 @@ import SearchBar, { SearchForm } from "../components/SearchBar";
 import PaginationSelector from "../components/PaginationSelector";
 import CuisineFilter from "../components/CuisineFilter";
 import SortOptionDropdown from "../components/SortOptionDropdown";
+import { IRestaurant } from "../types";
 
 export interface ISearchState {
   searchQuery: string;
@@ -110,7 +111,7 @@ const SearchRestaurants: FC = (): React.JSX.Element => {
             onChange={(value) => handleSetSortOption(value)}
           />
         </div>
-        {restaurants.response.data.map((restaurant) => (
+        {restaurants.response.data.map((restaurant: IRestaurant) => (
           <SearchResultCard key={crypto.randomUUID()} restaurant={restaurant} />
         ))}
 
