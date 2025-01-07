@@ -10,7 +10,6 @@ export const useCreateRestaurant = () => {
   const createRestauantRequest = async (
     restaurantFormData: FormData
   ): Promise<IRestaurantResponse> => {
-    console.log("R DATA", JSON.stringify(restaurantFormData));
     const accessToken = await getAccessTokenSilently();
 
     const response = await fetch(`${VITE_API_BASE_URL}/api/restaurants`, {
