@@ -46,7 +46,7 @@ const SearchResultCard: FC<ISearchResultCard> = ({
               {restaurant.estimatedDeliveryTime} mins
             </div>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 text-rose-500">
               <FaMoneyBill1Wave size={24} />
               Delivery from Rs {(restaurant.deliveryPrice / 100).toFixed(2)}
             </div>
