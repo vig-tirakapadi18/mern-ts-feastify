@@ -104,3 +104,25 @@ export const useUpdateRestaurant = () => {
 
   return { updateRestaurant, isLoading };
 };
+
+export const useGetRestaurantById = (restaurantId?: string) => {
+  const getMyRestaurantRequest = async (): Promise<IRestaurantResponse> => {
+    const response = await fetch(
+      `${VITE_API_BASE_URL}/api/restaurants/${restaurantId}`
+    );
+
+    return response.json();
+  };
+
+  const {
+    data: restaurantData,
+    isError,
+    isLoading,
+  } = useQuery("getRestaurantById", getMyRestaurantRequest, {
+    enabled: !!restaurantId, // ONLY ENABLES QUERY IF restaurantId IS PRESENT
+  });
+
+  if (isError) toast.error("Failed to get the restaurant!");
+
+  return { restaurantData, isLoading };
+};

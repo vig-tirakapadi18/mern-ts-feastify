@@ -2,11 +2,15 @@ import { Router } from "express";
 import {
   createRestaurant,
   getLoggedInUserRestaurant,
+  getRestaurantById,
   updateRestaurant,
 } from "../controllers/restaurant.controller";
 import { upload } from "../config/multer";
 import { jwtCheck, jwtParse } from "../middlewares/auth";
-import { validateRestaurantRequest } from "../middlewares/validation";
+import {
+  validateParam,
+  validateRestaurantRequest,
+} from "../middlewares/validation";
 
 const router = Router();
 
@@ -30,5 +34,9 @@ router
     jwtParse,
     updateRestaurant
   );
+
+router
+  .route("/:restaurantId")
+  .get(validateParam("restaurantId"), getRestaurantById);
 
 export default router;

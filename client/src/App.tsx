@@ -6,6 +6,7 @@ import UserProfile from "./pages/UserProfile";
 import ProtectedRoutes from "./auth/ProtectedRoutes";
 import ManageRestaurant from "./pages/ManageRestaurant";
 import SearchRestaurants from "./pages/SearchRestaurants";
+import RestaurantDetail from "./pages/RestaurantDetail";
 
 function App() {
   return (
@@ -24,6 +25,14 @@ function App() {
         element={
           <Layout showHero={false}>
             <SearchRestaurants />
+          </Layout>
+        }
+      />
+      <Route
+        path="/detail/:restaurantId"
+        element={
+          <Layout showHero={false}>
+            <RestaurantDetail />
           </Layout>
         }
       />

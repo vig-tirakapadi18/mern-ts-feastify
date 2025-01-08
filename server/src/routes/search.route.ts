@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { validateCityParam } from "../middlewares/validation";
+import { validateParam } from "../middlewares/validation";
 import { searchRestaurants } from "../controllers/search.controller";
 
 const router = Router();
 
-router.route("/:city").get(validateCityParam, searchRestaurants);
+router.route("/:city").get(validateParam("city"), searchRestaurants);
 
 export default router;
