@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { VITE_API_BASE_URL } from "./UserApi";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
-import { IRestaurantResponse } from "../types";
+import { IRestaurant, IRestaurantResponse } from "../types";
 
 export const useCreateRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -103,4 +103,26 @@ export const useUpdateRestaurant = () => {
   if (isError || error) toast.error("Failed to update the restaurant!");
 
   return { updateRestaurant, isLoading };
+};
+
+export const useGetRestaurantById = (restaurantId?: string) => {
+  const getMyRestaurantRequest = async (): Promise<IRestaurant> => {
+    const response = await fetch(
+      `${VITE_API_BASE_URL}/api/restaurants/${restaurantId}`
+    );
+
+    return response.json();
+  };
+
+  const {
+    data: restaurantData,
+    isError,
+    isLoading,
+    isSuccess,
+  } = useQuery("getRestaurantById", getMyRestaurantRequest);
+
+  if (isError) toast.error("Failed to get the restaurant!");
+  if (isSuccess) toast.success("Successfully fetched the restaurant!");
+
+  return { restaurantData, isLoading };
 };
