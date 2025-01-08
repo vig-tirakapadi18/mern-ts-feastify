@@ -7,6 +7,7 @@ import {
   CODE_500,
   ERROR_INTERNAL_SERVER_ERROR,
   ERROR_RESTAURANT_NOT_FOUND,
+  ERROR_RESTAURANT_NOT_FOUND_ID,
   ERROR_USER_RESTAURANT_EXISTS,
   RESTAURANT_CREATE_SUCCESS,
   RESTAURANT_GET_SUCCESS,
@@ -101,5 +102,30 @@ export const updateRestaurant = async (req: Request, res: Response) => {
   } catch (error) {
     console.log("UPDATE RESTAURANT", error);
     res.status(CODE_500).json({ message: ERROR_INTERNAL_SERVER_ERROR });
+  }
+};
+
+export const getRestaurantById = async (req: Request, res: Response) => {
+  const { restaurantId } = req.params;
+
+  if (!restaurantId) {
+    res.status(CODE_404).json({ message: ERROR_RESTAURANT_NOT_FOUND_ID });
+    return;
+  }
+
+  try {
+    const restaurant = await Restaurant.findById(restaurantId);
+
+    if (!restaurant) {
+      res.status(CODE_404).json({ message: ERROR_RESTAURANT_NOT_FOUND_ID });
+      return;
+    }
+
+    res
+      .status(CODE_200)
+      .json({ success: true, restaurant, message: RESTAURANT_GET_SUCCESS });
+  } catch (error) {
+    console.log("GET RESTAURANT BY ID", error);
+    res.status(CODE_404).json({ message: ERROR_RESTAURANT_NOT_FOUND_ID });
   }
 };
