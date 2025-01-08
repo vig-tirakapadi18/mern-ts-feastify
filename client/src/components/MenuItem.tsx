@@ -4,11 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 interface IMenuItemProps {
   menuItem: IMenuItem;
+  addToCart: () => void;
 }
 
-const MenuItem: FC<IMenuItemProps> = ({ menuItem }): React.JSX.Element => {
+const MenuItem: FC<IMenuItemProps> = ({
+  menuItem,
+  addToCart,
+}): React.JSX.Element => {
   return (
-    <Card>
+    <Card className="cursor-pointer" onClick={addToCart}>
       <CardHeader>
         <CardTitle>{menuItem.name}</CardTitle>
       </CardHeader>

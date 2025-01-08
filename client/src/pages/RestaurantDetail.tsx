@@ -1,14 +1,49 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetRestaurantById } from "../api/RestaurantApi";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { AspectRatio } from "../components/ui/aspect-ratio";
 import RestaurantInfo from "../components/RestaurantInfo";
 import MenuItem from "../components/MenuItem";
+import { ICartItem, IMenuItem } from "../types";
+import { Card } from "../components/ui/card";
+import OrderSummary from "../components/OrderSummary";
 
 const RestaurantDetail: FC = (): React.JSX.Element => {
   const { restaurantId } = useParams();
   const { restaurantData, isLoading } = useGetRestaurantById(restaurantId);
+
+  const [cartItems, setCartItems] = useState<ICartItem[]>([]);
+
+  const addToCart = (menuItem: IMenuItem) => {
+    setCartItems((prevCartItems) => {
+      const existingCartItem = prevCartItems.find(
+        (cartItem) => cartItem._id === menuItem._id
+      );
+
+      let updatedCartItems;
+
+      if (existingCartItem) {
+        updatedCartItems = prevCartItems.map((cartItem) =>
+          cartItem._id === menuItem._id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        );
+      } else {
+        updatedCartItems = [
+          ...prevCartItems,
+          {
+            _id: menuItem._id,
+            name: menuItem.name,
+            quantity: 1,
+            price: menuItem.price,
+          },
+        ];
+      }
+
+      return updatedCartItems;
+    });
+  };
 
   if (isLoading || !restaurantData) return <LoadingSpinner />;
 
@@ -28,8 +63,21 @@ const RestaurantDetail: FC = (): React.JSX.Element => {
           <span className="text-2xl font-bold tracking-tight">Menu</span>
 
           {restaurantData.restaurant.menuItems.map((menuItem) => (
-            <MenuItem key={crypto.randomUUID()} menuItem={menuItem} />
+            <MenuItem
+              key={crypto.randomUUID()}
+              menuItem={menuItem}
+              addToCart={() => addToCart(menuItem)}
+            />
           ))}
+        </div>
+
+        <div className="">
+          <Card>
+            <OrderSummary
+              restaurant={restaurantData.restaurant}
+              cartItems={cartItems}
+            />
+          </Card>
         </div>
       </div>
     </section>

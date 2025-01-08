@@ -10,6 +10,7 @@ export interface IUser {
 }
 
 export interface IMenuItem {
+  _id: string;
   name: string;
   price: number;
 }
@@ -45,4 +46,11 @@ export interface ISearchRestaurants {
       pages: number;
     };
   };
+}
+
+export interface ICartItem {
+  _id: string;
+  name: string;
+  price: number;
+  quantity: number;
 }
