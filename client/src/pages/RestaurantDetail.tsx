@@ -45,6 +45,16 @@ const RestaurantDetail: FC = (): React.JSX.Element => {
     });
   };
 
+  const removeFromCart = (cartItem: ICartItem) => {
+    setCartItems((prevCartItems) => {
+      const updatedCartItems = prevCartItems.filter(
+        (item) => item._id !== cartItem._id
+      );
+
+      return updatedCartItems;
+    });
+  };
+
   if (isLoading || !restaurantData) return <LoadingSpinner />;
 
   return (
@@ -76,6 +86,7 @@ const RestaurantDetail: FC = (): React.JSX.Element => {
             <OrderSummary
               restaurant={restaurantData.restaurant}
               cartItems={cartItems}
+              removeFromCart={removeFromCart}
             />
           </Card>
         </div>

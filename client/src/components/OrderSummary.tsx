@@ -3,15 +3,18 @@ import { ICartItem, IRestaurant } from "../types";
 import { CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
+import { FaTrashAlt } from "react-icons/fa";
 
 interface IOrderSummaryProps {
   restaurant: IRestaurant;
   cartItems: ICartItem[];
+  removeFromCart: (cartItem: ICartItem) => void;
 }
 
 const OrderSummary: FC<IOrderSummaryProps> = ({
   restaurant,
   cartItems,
+  removeFromCart,
 }): React.JSX.Element => {
   const gettotalCost = () => {
     const totalInPaisas = cartItems.reduce(
@@ -44,7 +47,12 @@ const OrderSummary: FC<IOrderSummaryProps> = ({
             </span>
 
             <span className="flex items-center gap-1">
-              Rs {((item.price * item.quantity) / 100).toFixed(2)}
+              <span>Rs {((item.price * item.quantity) / 100).toFixed(2)}</span>
+              <FaTrashAlt
+                className="text-rose-500 ml-1 cursor-pointer"
+                size={18}
+                onClick={() => removeFromCart(item)}
+              />
             </span>
           </div>
         ))}
