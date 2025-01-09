@@ -23,12 +23,16 @@ interface IUserProfileFormProps {
   onSave: (userProfileData: UserFormData) => void;
   isLoading: boolean;
   currentLoggedInUser: IUser;
+  title?: string;
+  buttonText?: string;
 }
 
 const UserProfileForm: FC<IUserProfileFormProps> = ({
   isLoading,
   onSave,
   currentLoggedInUser,
+  title = "User Profile",
+  buttonText = "Update Profile",
 }: IUserProfileFormProps): React.JSX.Element => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
@@ -46,7 +50,7 @@ const UserProfileForm: FC<IUserProfileFormProps> = ({
         className="space-y-4 bg-gray-50 rounded-lg md:p-10"
       >
         <div className="">
-          <h2 className="text-2xl font-bold">User Profile</h2>
+          <h2 className="text-2xl font-bold">{title}</h2>
           <FormDescription>
             View and edit your user profile details.
           </FormDescription>
@@ -131,7 +135,7 @@ const UserProfileForm: FC<IUserProfileFormProps> = ({
           <LoadingButton />
         ) : (
           <Button className="bg-emerald-500 hover:bg-emerald-600">
-            Update Profile
+            {buttonText}
           </Button>
         )}
       </form>

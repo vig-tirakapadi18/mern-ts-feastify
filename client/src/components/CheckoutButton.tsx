@@ -67,6 +67,8 @@ const CheckoutButton: FC<ICheckoutButtonProps> = ({
           currentLoggedInUser={currentLoggedInUser}
           onSave={onCheckout}
           isLoading={isGetUserLoading}
+          title="Confirm Delivery Details"
+          buttonText="Continue to Payment"
         />
       </DialogContent>
     </Dialog>
