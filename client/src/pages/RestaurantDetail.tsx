@@ -6,14 +6,20 @@ import { AspectRatio } from "../components/ui/aspect-ratio";
 import RestaurantInfo from "../components/RestaurantInfo";
 import MenuItem from "../components/MenuItem";
 import { ICartItem, IMenuItem } from "../types";
-import { Card } from "../components/ui/card";
+import { Card, CardFooter } from "../components/ui/card";
 import OrderSummary from "../components/OrderSummary";
+import CheckoutButton from "../components/CheckoutButton";
+import { UserFormData } from "../components/forms/UserProfileForm";
 
 const RestaurantDetail: FC = (): React.JSX.Element => {
   const { restaurantId } = useParams();
   const { restaurantData, isLoading } = useGetRestaurantById(restaurantId);
 
-  const [cartItems, setCartItems] = useState<ICartItem[]>([]);
+  const [cartItems, setCartItems] = useState<ICartItem[]>(() => {
+    const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
+
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
+  });
 
   const addToCart = (menuItem: IMenuItem) => {
     setCartItems((prevCartItems) => {
@@ -41,6 +47,11 @@ const RestaurantDetail: FC = (): React.JSX.Element => {
         ];
       }
 
+      sessionStorage.setItem(
+        `cartItems-${restaurantId}`,
+        JSON.stringify(updatedCartItems)
+      );
+
       return updatedCartItems;
     });
   };
@@ -51,8 +62,17 @@ const RestaurantDetail: FC = (): React.JSX.Element => {
         (item) => item._id !== cartItem._id
       );
 
+      sessionStorage.setItem(
+        `cartItems-${restaurantId}`,
+        JSON.stringify(updatedCartItems)
+      );
+
       return updatedCartItems;
     });
+  };
+
+  const onCheckout = (userFormData: UserFormData) => {
+    console.log(userFormData);
   };
 
   if (isLoading || !restaurantData) return <LoadingSpinner />;
@@ -88,6 +108,13 @@ const RestaurantDetail: FC = (): React.JSX.Element => {
               cartItems={cartItems}
               removeFromCart={removeFromCart}
             />
+
+            <CardFooter>
+              <CheckoutButton
+                disabled={cartItems.length === 0}
+                onCheckout={onCheckout}
+              />
+            </CardFooter>
           </Card>
         </div>
       </div>

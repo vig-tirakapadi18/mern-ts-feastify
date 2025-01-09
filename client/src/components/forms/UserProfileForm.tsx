@@ -17,7 +17,7 @@ import LoadingButton from "../LoadingButton";
 import { IUser } from "../../types";
 import { formSchema } from "../../models/UserSchema";
 
-type UserFormData = z.infer<typeof formSchema>;
+export type UserFormData = z.infer<typeof formSchema>;
 
 interface IUserProfileFormProps {
   onSave: (userProfileData: UserFormData) => void;
