@@ -18,7 +18,7 @@ connectToCloudinary();
 
 app.use(express.json());
 
-app.get("/health", (req, res: Response) => {
+app.get("/", (req, res: Response) => {
   res.json({ message: "Server health is GREAT!" });
 });
 
