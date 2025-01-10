@@ -5,11 +5,14 @@
   "main": "app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.ts"
+    "dev": "nodemon app.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "author": "Vighnesh VT",
   "license": "MIT",
   "dependencies": {
+    "@vercel/node": "^5.0.2",
     "cloudinary": "^2.5.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -18,7 +21,8 @@
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.2",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "stripe": "^17.5.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
