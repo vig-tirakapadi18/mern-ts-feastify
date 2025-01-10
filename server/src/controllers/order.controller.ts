@@ -118,24 +118,3 @@ const createSession = async (
 
   return sessionData;
 };
-
-
-// import { v2 as cloudinary } from "cloudinary";
-
-// export const connectToCloudinary = () => {
-//   return cloudinary.config({
-//     cloud_name: process.env.CLOUDINATY_CLOUD_NAME,
-//     api_key: process.env.CLOUDINARY_API_KEY,
-//     api_secret: process.env.CLOUDINARY_API_SECRET,
-//   });
-// };
-
-
-// import mongoose from "mongoose";
-
-// export const connectToDB = () => {
-//   return mongoose
-//     .connect(process.env.MONGO_CONN_STR as string)
-//     .then(() => console.log("Connection established with MongoDB!"))
-//     .catch((err) => console.log(err));
-// };
