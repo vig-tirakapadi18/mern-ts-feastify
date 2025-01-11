@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 import Stripe from "stripe";
 import {
+  CODE_200,
   CODE_404,
   CODE_500,
   ERROR_RESTAURANT_NOT_FOUND,
+  ERROR_STRIPE_SESSION,
+  SESSION_CREATE_SUCCESS,
 } from "../utils/constants";
 import Restaurant, { MenuItemType } from "../models/restaurant.model";
 
@@ -54,6 +57,18 @@ export const createCheckoutSession = async (
       restaurant.deliveryPrice,
       restaurant._id.toString()
     );
+
+    if (!session.url) {
+      res
+        .status(CODE_500)
+        .json({ success: false, message: ERROR_STRIPE_SESSION });
+    }
+
+    res.status(CODE_200).json({
+      success: true,
+      url: session.url,
+      message: SESSION_CREATE_SUCCESS,
+    });
   } catch (error: any) {
     console.log("CHECKOUT SESSION ERROR", error);
     res.status(CODE_500).json({ success: false, message: error.raw.message });

@@ -12,11 +12,13 @@ import { FaShoppingCart } from "react-icons/fa";
 interface ICheckoutButtonProps {
   onCheckout: (userFormdata: UserFormData) => void;
   disabled: boolean;
+  isLoading: boolean;
 }
 
 const CheckoutButton: FC<ICheckoutButtonProps> = ({
   onCheckout,
   disabled,
+  isLoading,
 }): React.JSX.Element => {
   const {
     isAuthenticated,
@@ -48,7 +50,8 @@ const CheckoutButton: FC<ICheckoutButtonProps> = ({
     );
   }
 
-  if (isAuthLoading || !currentLoggedInUser) return <LoadingButton />;
+  if (isAuthLoading || !currentLoggedInUser || isLoading)
+    return <LoadingButton />;
 
   return (
     <Dialog>

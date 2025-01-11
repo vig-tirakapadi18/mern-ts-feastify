@@ -17,8 +17,6 @@ interface IUpdateUser {
 
 export const VITE_API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL;
 
-console.log(VITE_API_BASE_URL);
-
 export const useCreateUser = () => {
   const { getAccessTokenSilently } = useAuth0();
 

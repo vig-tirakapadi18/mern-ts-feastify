@@ -21,6 +21,7 @@ export const ERROR_RESTAURANT_NOT_FOUND: string =
 export const ERROR_SEARCH_RESTAURANTS: string = "Unable to search restaurants!";
 export const ERROR_RESTAURANT_NOT_FOUND_ID: string =
   "Restaurant not found for a given ID!";
+export const ERROR_STRIPE_SESSION: string = "Failed to create session!";
 
 export const USER_CREATE_SUCCESS: string = "User created successfully!";
 export const USER_UPDATE_SUCCESS: string = "User updated successfully!";
@@ -36,3 +37,4 @@ export const RESTAURANT_GET_SUCCESS: string =
   "Restaurant retrieved successfully!";
 export const RESTAURANT_UPDATE_SUCCESS: string =
   "Restaurant updated successfully!";
+  export const SESSION_CREATE_SUCCESS: string = "Session created successfully!";
