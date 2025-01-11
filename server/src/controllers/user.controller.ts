@@ -20,9 +20,6 @@ export const createUser = async (
 ): Promise<void> => {
   const userBody = req.body;
 
-  console.log(userBody);
-  console.log("Hello");
-
   try {
     const existingUser = await User.findOne({ auth0Id: userBody.auth0Id });
 

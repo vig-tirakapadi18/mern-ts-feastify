@@ -20,8 +20,6 @@ export const useCreateRestaurant = () => {
       body: restaurantFormData,
     });
 
-    console.log(response);
-
     if (!response.ok) throw new Error("Error creating a restaurant!");
 
     return response.json();
