@@ -17,6 +17,7 @@ app.use(cors());
 connectToDB();
 connectToCloudinary();
 
+app.use("/api/orders/checkout/webhook", express.raw({ type: "*/*" }));
 app.use(express.json());
 
 app.get("/", (req, res: Response) => {
