@@ -1,7 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { VITE_API_BASE_URL } from "./UserApi";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
+import { IOrder } from "../types";
 
 interface ICheckoutSessionRequest {
   cartItems: {
@@ -57,4 +58,33 @@ export const useCreateCheckoutSession = () => {
   }
 
   return { createCheckoutSession, isLoading };
+};
+
+export const useGetAllOrders = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const getAllOrdersRequest = async (): Promise<IOrder[]> => {
+    const accessToken = await getAccessTokenSilently();
+
+    const response = await fetch(`${VITE_API_BASE_URL}/api/orders`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (!response.ok) throw new Error("Unable to get orders!");
+
+    return response.json();
+  };
+
+  const {
+    data: getAllOrders,
+    isError,
+    error,
+    isLoading,
+  } = useQuery("getAllOrders", getAllOrdersRequest);
+
+  if (isError || error) {
+    toast.error("Failed to get orders!");
+  }
+
+  return { getAllOrders, isLoading };
 };

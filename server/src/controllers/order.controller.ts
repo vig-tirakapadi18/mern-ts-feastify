@@ -5,9 +5,12 @@ import {
   CODE_400,
   CODE_404,
   CODE_500,
+  ERROR_INTERNAL_SERVER_ERROR,
   ERROR_ORDER_NOT_FOUND,
+  ERROR_ORDERS_FOR_USER_NOT_FOUND,
   ERROR_RESTAURANT_NOT_FOUND,
   ERROR_STRIPE_SESSION,
+  ORDERS_FETCH_SUCCESS,
   SESSION_CREATE_SUCCESS,
 } from "../utils/constants";
 import Restaurant, { MenuItemType } from "../models/restaurant.model";
@@ -177,4 +180,26 @@ export const stripeWebhookHandler = async (req: Request, res: Response) => {
   }
 
   res.status(CODE_200).send();
+};
+
+export const getAllOrders = async (req: Request, res: Response) => {
+  try {
+    const orders = await Order.find({ user: req.userId })
+      .populate("restaurant")
+      .populate("user");
+
+    if (!orders) {
+      res.status(CODE_404).json({ message: ERROR_ORDER_NOT_FOUND });
+      return;
+    }
+
+    res.status(CODE_200).json({
+      success: true,
+      orders,
+      message: ORDERS_FETCH_SUCCESS,
+    });
+  } catch (error) {
+    console.log("GET ALL ORDERS", error);
+    res.status(CODE_500).json({ message: ERROR_ORDERS_FOR_USER_NOT_FOUND });
+  }
 };

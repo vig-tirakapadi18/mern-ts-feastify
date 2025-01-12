@@ -23,6 +23,8 @@ export const ERROR_RESTAURANT_NOT_FOUND_ID: string =
   "Restaurant not found for a given ID!";
 export const ERROR_STRIPE_SESSION: string = "Failed to create session!";
 export const ERROR_ORDER_NOT_FOUND: string = "Order not found!";
+export const ERROR_ORDERS_FOR_USER_NOT_FOUND: string =
+  "Orders for user not found!";
 
 export const USER_CREATE_SUCCESS: string = "User created successfully!";
 export const USER_UPDATE_SUCCESS: string = "User updated successfully!";
@@ -38,4 +40,5 @@ export const RESTAURANT_GET_SUCCESS: string =
   "Restaurant retrieved successfully!";
 export const RESTAURANT_UPDATE_SUCCESS: string =
   "Restaurant updated successfully!";
-  export const SESSION_CREATE_SUCCESS: string = "Session created successfully!";
+export const SESSION_CREATE_SUCCESS: string = "Session created successfully!";
+export const ORDERS_FETCH_SUCCESS: string = "Oredrs fetched successfully!";
