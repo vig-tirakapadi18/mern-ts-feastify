@@ -2,16 +2,20 @@ import { Request, Response } from "express";
 import Stripe from "stripe";
 import {
   CODE_200,
+  CODE_400,
   CODE_404,
   CODE_500,
+  ERROR_ORDER_NOT_FOUND,
   ERROR_RESTAURANT_NOT_FOUND,
   ERROR_STRIPE_SESSION,
   SESSION_CREATE_SUCCESS,
 } from "../utils/constants";
 import Restaurant, { MenuItemType } from "../models/restaurant.model";
+import Order from "../models/order.model";
 
 const STRIPE = new Stripe(process.env.STRIPE_API_KEY as string);
 const FRONTEND_URL = process.env.FRONTEND_URL as string;
+const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET as string;
 
 interface ICheckoutSessionRequest {
   cartItems: {
@@ -46,6 +50,15 @@ export const createCheckoutSession = async (
       return;
     }
 
+    const newOrder = new Order({
+      restaurant: restaurant,
+      user: req.userId,
+      status: "placed",
+      deliveryDetails: checkoutSessionRequest.deliveryDetails,
+      cartItems: checkoutSessionRequest.cartItems,
+      createdAt: new Date(),
+    });
+
     const lineItems = createLineItems(
       checkoutSessionRequest,
       restaurant.menuItems
@@ -53,7 +66,7 @@ export const createCheckoutSession = async (
 
     const session = await createSession(
       lineItems,
-      "TEST_ORDER_ID",
+      newOrder._id.toString(),
       restaurant.deliveryPrice,
       restaurant._id.toString()
     );
@@ -64,6 +77,7 @@ export const createCheckoutSession = async (
         .json({ success: false, message: ERROR_STRIPE_SESSION });
     }
 
+    await newOrder.save();
     res.status(CODE_200).json({
       success: true,
       url: session.url,
@@ -132,4 +146,35 @@ const createSession = async (
   });
 
   return sessionData;
+};
+
+export const stripeWebhookHandler = async (req: Request, res: Response) => {
+  let event;
+  try {
+    const sign = req.headers["stripe-signature"];
+    event = STRIPE.webhooks.constructEvent(
+      req.body,
+      sign as string,
+      STRIPE_WEBHOOK_SECRET
+    );
+  } catch (error: any) {
+    console.log("STRIPE WEBHOOK", error);
+    res.status(CODE_400).json({ error: `Webhook error ${error.message}` });
+  }
+
+  if (event?.type === "checkout.session.completed") {
+    const order = await Order.findById(event.data.object.metadata?.orderId);
+
+    if (!order) {
+      res.status(CODE_404).json({ message: ERROR_ORDER_NOT_FOUND });
+      return;
+    }
+
+    order.totalAmount = event.data.object.amount_total;
+    order.status = "paid";
+
+    await order.save();
+  }
+
+  res.status(CODE_200).send();
 };
