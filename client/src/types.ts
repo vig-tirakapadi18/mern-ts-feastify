@@ -54,3 +54,32 @@ export interface ICartItem {
   price: number;
   quantity: number;
 }
+
+export type OrderStatus =
+  | "pending"
+  | "paid"
+  | "placed"
+  | "inProgress"
+  | "outForDelivery"
+  | "delivered";
+
+export interface IOrder {
+  _id: string;
+  restaurant: IRestaurant;
+  user: IUser;
+  cartItems: {
+    menuItemId: string;
+    name: string;
+    quantity: string;
+  }[];
+  deliveryDetails: {
+    name: string;
+    addressLine1: string;
+    city: string;
+    email: string;
+  };
+  totalAmount: number;
+  status: OrderStatus;
+  createdAt: string;
+  restaurantId: string;
+}
