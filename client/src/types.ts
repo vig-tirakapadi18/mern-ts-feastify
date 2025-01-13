@@ -83,3 +83,9 @@ export interface IOrder {
   createdAt: string;
   restaurantId: string;
 }
+
+export interface IOrderResponse {
+  success: boolean;
+  message: string;
+  orders: IOrder[];
+}
