@@ -37,8 +37,16 @@ const MobileNav: FC = (): React.JSX.Element => {
                   <FaUserCircle color="#10b981" size={32} />
                 )}
               </span>
-              <Link to="/profile" className="text-2xl font-bold hover:text-emerald-500">{user?.name}</Link>
+              <Link
+                to="/profile"
+                className="text-2xl font-bold hover:text-emerald-500"
+              >
+                {user?.name}
+              </Link>
               <span className="text-emerald-500">{user?.email}</span>
+              <span className="flex my-2 gap-1 hover:text-emerald-500 transition-all duration-200 cursor-pointer">
+                My Orders
+              </span>
             </div>
           ) : (
             <span>Welcome to Feastify!🍔</span>
