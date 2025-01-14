@@ -9,7 +9,7 @@ interface ISearchResultInfo {
 const SearchResultInfo: FC<ISearchResultInfo> = ({
   total,
   city,
-}: ISearchResultInfo) => {
+}: ISearchResultInfo): React.JSX.Element => {
   return (
     <section className="text-xl font-bold flex flex-col gap-3 justify-between lg:items-center lg:flex-row">
       <span>
