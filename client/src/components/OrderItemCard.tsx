@@ -18,7 +18,9 @@ interface IOrderItemCardProps {
   order: IOrder;
 }
 
-const OrderItemCard: FC<IOrderItemCardProps> = ({ order }) => {
+const OrderItemCard: FC<IOrderItemCardProps> = ({
+  order,
+}): React.JSX.Element => {
   const { updateRestaurantStatusData, isLoading } =
     useUpdateRestaurantOrderStatus();
 

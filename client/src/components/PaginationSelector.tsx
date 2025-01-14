@@ -30,6 +30,7 @@ const PaginationSelector: FC<IPaginationProps> = ({
             <PaginationPrevious
               href="#"
               onClick={() => onPageChange(page - 1)}
+              size="default"
             />
           </PaginationItem>
         )}
@@ -40,6 +41,7 @@ const PaginationSelector: FC<IPaginationProps> = ({
               href="#"
               onClick={() => onPageChange(number)}
               isActive={page === number}
+              size="default"
             >
               {number}
             </PaginationLink>
@@ -48,7 +50,11 @@ const PaginationSelector: FC<IPaginationProps> = ({
 
         {page !== pageNumbers.length && (
           <PaginationItem>
-            <PaginationNext href="#" onClick={() => onPageChange(page + 1)} />
+            <PaginationNext
+              href="#"
+              onClick={() => onPageChange(page + 1)}
+              size="default"
+            />
           </PaginationItem>
         )}
       </PaginationContent>

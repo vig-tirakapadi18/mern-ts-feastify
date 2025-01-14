@@ -1,9 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import React, { useEffect, useRef } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateUser } from "../api/UserApi";
 
-const AuthCallback = () => {
+const AuthCallback: FC = (): React.JSX.Element => {
   const { user } = useAuth0();
   const { createUser } = useCreateUser();
   const navigate = useNavigate();

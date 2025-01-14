@@ -19,7 +19,7 @@ interface IMenuItemInputProps {
 const MenuItemInput: FC<IMenuItemInputProps> = ({
   index,
   removeMenuItem,
-}: IMenuItemInputProps) => {
+}: IMenuItemInputProps): React.JSX.Element => {
   const { control } = useFormContext();
 
   return (
