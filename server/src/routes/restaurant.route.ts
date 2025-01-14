@@ -4,6 +4,7 @@ import {
   getLoggedInUserRestaurant,
   getRestaurantById,
   getThisRestaurantOrders,
+  updateOrderStatus,
   updateRestaurant,
 } from "../controllers/restaurant.controller";
 import { upload } from "../config/multer";
@@ -16,6 +17,10 @@ import {
 const router = Router();
 
 router.route("/order").get(jwtCheck, jwtParse, getThisRestaurantOrders);
+
+router
+  .route("/order/:orderId/status")
+  .patch(jwtCheck, jwtParse, updateOrderStatus);
 
 router
   .route("/")
