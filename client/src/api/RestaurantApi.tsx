@@ -145,7 +145,7 @@ export const useGetThisRestaurantOrders = () => {
   };
 
   const {
-    data: orders,
+    data: ordersResponse,
     isError,
     error,
     isLoading,
@@ -154,5 +154,5 @@ export const useGetThisRestaurantOrders = () => {
   if (isError || error)
     toast.error("Failed to fetch orders for this restaurant!");
 
-  return { orders, isLoading };
+  return { ordersResponse, isLoading };
 };
