@@ -1,17 +1,9 @@
 import { Request, Response } from "express";
 import Stripe from "stripe";
 import {
-  CODE_200,
-  CODE_400,
-  CODE_404,
-  CODE_500,
-  ERROR_INTERNAL_SERVER_ERROR,
-  ERROR_ORDER_NOT_FOUND,
-  ERROR_ORDERS_FOR_USER_NOT_FOUND,
-  ERROR_RESTAURANT_NOT_FOUND,
-  ERROR_STRIPE_SESSION,
-  ORDERS_FETCH_SUCCESS,
-  SESSION_CREATE_SUCCESS,
+  errorMessages,
+  statusCodes,
+  successMessages,
 } from "../utils/constants";
 import Restaurant, { MenuItemType } from "../models/restaurant.model";
 import Order from "../models/order.model";
@@ -48,8 +40,8 @@ export const createCheckoutSession = async (
 
     if (!restaurant) {
       res
-        .status(CODE_404)
-        .json({ success: false, message: ERROR_RESTAURANT_NOT_FOUND });
+        .status(statusCodes.code404)
+        .json({ success: false, message: errorMessages.restaurantNotFound });
       return;
     }
 
@@ -76,19 +68,21 @@ export const createCheckoutSession = async (
 
     if (!session.url) {
       res
-        .status(CODE_500)
-        .json({ success: false, message: ERROR_STRIPE_SESSION });
+        .status(statusCodes.code500)
+        .json({ success: false, message: errorMessages.stripeSession });
     }
 
     await newOrder.save();
-    res.status(CODE_200).json({
+    res.status(statusCodes.code200).json({
       success: true,
       url: session.url,
-      message: SESSION_CREATE_SUCCESS,
+      message: successMessages.sessionCreate,
     });
   } catch (error: any) {
     console.log("CHECKOUT SESSION ERROR", error);
-    res.status(CODE_500).json({ success: false, message: error.raw.message });
+    res
+      .status(statusCodes.code500)
+      .json({ success: false, message: error.raw.message });
   }
 };
 
@@ -162,14 +156,18 @@ export const stripeWebhookHandler = async (req: Request, res: Response) => {
     );
   } catch (error: any) {
     console.log("STRIPE WEBHOOK", error);
-    res.status(CODE_400).json({ error: `Webhook error ${error.message}` });
+    res
+      .status(statusCodes.code400)
+      .json({ error: `Webhook error ${error.message}` });
   }
 
   if (event?.type === "checkout.session.completed") {
     const order = await Order.findById(event.data.object.metadata?.orderId);
 
     if (!order) {
-      res.status(CODE_404).json({ message: ERROR_ORDER_NOT_FOUND });
+      res
+        .status(statusCodes.code404)
+        .json({ message: errorMessages.orderNotFound });
       return;
     }
 
@@ -179,7 +177,7 @@ export const stripeWebhookHandler = async (req: Request, res: Response) => {
     await order.save();
   }
 
-  res.status(CODE_200).send();
+  res.status(statusCodes.code200).send();
 };
 
 export const getAllOrders = async (req: Request, res: Response) => {
@@ -189,17 +187,21 @@ export const getAllOrders = async (req: Request, res: Response) => {
       .populate("user");
 
     if (!orders) {
-      res.status(CODE_404).json({ message: ERROR_ORDER_NOT_FOUND });
+      res
+        .status(statusCodes.code404)
+        .json({ message: errorMessages.orderNotFound });
       return;
     }
 
-    res.status(CODE_200).json({
+    res.status(statusCodes.code200).json({
       success: true,
       orders,
-      message: ORDERS_FETCH_SUCCESS,
+      message: successMessages.ordersFetch,
     });
   } catch (error) {
     console.log("GET ALL ORDERS", error);
-    res.status(CODE_500).json({ message: ERROR_ORDERS_FOR_USER_NOT_FOUND });
+    res
+      .status(statusCodes.code500)
+      .json({ message: errorMessages.ordersForUserNotFound });
   }
 };

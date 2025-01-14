@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { auth } from "express-oauth2-jwt-bearer";
-import { CODE_401, ERROR_UNAUTHORIZED } from "../utils/constants";
+import { errorMessages, statusCodes } from "../utils/constants";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model";
 
@@ -27,7 +27,9 @@ export const jwtParse = async (
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    res.status(CODE_401).json({ message: ERROR_UNAUTHORIZED });
+    res
+      .status(statusCodes.code401)
+      .json({ message: errorMessages.unauthorized });
     return;
   }
 
@@ -39,7 +41,9 @@ export const jwtParse = async (
     const user = await User.findOne({ auth0Id });
 
     if (!user) {
-      res.status(CODE_401).json({ message: ERROR_UNAUTHORIZED });
+      res
+        .status(statusCodes.code401)
+        .json({ message: errorMessages.unauthorized });
       return;
     }
 
@@ -49,6 +53,8 @@ export const jwtParse = async (
     next();
   } catch (error) {
     console.log("JWT PARSE ERROR", error);
-    res.status(CODE_401).json({ message: ERROR_UNAUTHORIZED });
+    res
+      .status(statusCodes.code401)
+      .json({ message: errorMessages.unauthorized });
   }
 };
