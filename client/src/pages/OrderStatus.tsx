@@ -18,7 +18,7 @@ const OrderStatus: FC = (): React.JSX.Element => {
       {orderResponse.orders.map((order) => (
         <div
           key={crypto.randomUUID()}
-          className="space-y-10 bg-gray-50 px-10 py-10 rounded-lg shadow-lg border-emerald-200 border-[0.5px]"
+          className="space-y-10 bg-gray-50 px-10 py-10 rounded-lg shadow-lg border-emerald-200 border-[0.5px] mx-[5%]"
         >
           <OrderStatusHeader order={order} />
 

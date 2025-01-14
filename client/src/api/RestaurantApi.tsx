@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { VITE_API_BASE_URL } from "./UserApi";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
-import { IRestaurantResponse } from "../types";
+import { IOrderResponse, IRestaurantResponse } from "../types";
 
 export const useCreateRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -123,4 +123,36 @@ export const useGetRestaurantById = (restaurantId?: string) => {
   if (isError) toast.error("Failed to get the restaurant!");
 
   return { restaurantData, isLoading };
+};
+
+export const useGetThisRestaurantOrders = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const getThisrestaurantOrdersRequest = async (): Promise<IOrderResponse> => {
+    const accessToken = await getAccessTokenSilently();
+
+    const response = await fetch(`${VITE_API_BASE_URL}/api/restaurants/order`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok)
+      throw new Error("Failed to get this restaurant's orders!");
+
+    return response.json();
+  };
+
+  const {
+    data: orders,
+    isError,
+    error,
+    isLoading,
+  } = useQuery(["getThisrestaurantOrders"], getThisrestaurantOrdersRequest);
+
+  if (isError || error)
+    toast.error("Failed to fetch orders for this restaurant!");
+
+  return { orders, isLoading };
 };

@@ -3,6 +3,7 @@ import {
   createRestaurant,
   getLoggedInUserRestaurant,
   getRestaurantById,
+  getThisRestaurantOrders,
   updateRestaurant,
 } from "../controllers/restaurant.controller";
 import { upload } from "../config/multer";
@@ -13,6 +14,8 @@ import {
 } from "../middlewares/validation";
 
 const router = Router();
+
+router.route("/order").get(jwtCheck, jwtParse, getThisRestaurantOrders);
 
 router
   .route("/")
