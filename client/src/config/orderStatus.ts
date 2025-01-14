@@ -6,7 +6,7 @@ interface IOrderStatusInfo {
   progressValue: number;
 }
 
-export const orderStatus: IOrderStatusInfo[] = [
+export const ORDER_STATUS: IOrderStatusInfo[] = [
   { label: "Placed", value: "placed", progressValue: 0 },
   {
     label: "Awaiting Restaurant Confirmation",
