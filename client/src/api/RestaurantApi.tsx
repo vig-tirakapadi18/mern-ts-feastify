@@ -4,6 +4,11 @@ import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
 import { IOrderResponse, IRestaurantResponse } from "../types";
 
+interface IStatusUpdateData {
+  orderId: string;
+  status: string;
+}
+
 export const useCreateRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
 
@@ -155,4 +160,46 @@ export const useGetThisRestaurantOrders = () => {
     toast.error("Failed to fetch orders for this restaurant!");
 
   return { ordersResponse, isLoading };
+};
+
+export const useUpdateRestaurantOrderStatus = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateRestaurantStatusRequest = async (
+    statusUpdateData: IStatusUpdateData
+  ) => {
+    const accessToken = await getAccessTokenSilently();
+
+    const response = await fetch(
+      `${VITE_API_BASE_URL}/api/restaurants/order/${statusUpdateData.orderId}/status`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: statusUpdateData.status }),
+      }
+    );
+
+    if (!response.ok) throw new Error("Failed to update order status!");
+
+    return response.json();
+  };
+
+  const {
+    mutateAsync: updatedRestaurantStatusData,
+    isLoading,
+    isError,
+    isSuccess,
+    reset,
+  } = useMutation(updateRestaurantStatusRequest);
+
+  if (isSuccess) toast.success("Order status updated successfully!");
+  if (isError) {
+    toast.error("Failed to pdate he order status!");
+    reset();
+  }
+
+  return { updatedRestaurantStatusData, isLoading };
 };
