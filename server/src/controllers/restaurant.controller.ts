@@ -9,6 +9,7 @@ import {
   ERROR_RESTAURANT_NOT_FOUND,
   ERROR_RESTAURANT_NOT_FOUND_ID,
   ERROR_USER_RESTAURANT_EXISTS,
+  ORDERS_FETCH_SUCCESS,
   RESTAURANT_CREATE_SUCCESS,
   RESTAURANT_GET_SUCCESS,
   RESTAURANT_UPDATE_SUCCESS,
@@ -16,6 +17,7 @@ import {
 import Restaurant from "../models/restaurant.model";
 import { Types } from "mongoose";
 import { uploadImage } from "../utils/uploadImage";
+import Order from "../models/order.model";
 
 export const createRestaurant = async (req: Request, res: Response) => {
   try {
@@ -127,5 +129,31 @@ export const getRestaurantById = async (req: Request, res: Response) => {
   } catch (error) {
     console.log("GET RESTAURANT BY ID", error);
     res.status(CODE_404).json({ message: ERROR_RESTAURANT_NOT_FOUND_ID });
+  }
+};
+
+export const getThisRestaurantOrders = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+
+    if (!restaurant) {
+      res
+        .status(CODE_404)
+        .json({ success: false, message: ERROR_RESTAURANT_NOT_FOUND });
+      return;
+    }
+
+    const orders = await Order.findOne({ restaurant: restaurant._id })
+      .populate("restaurant")
+      .populate("user");
+
+    res
+      .status(CODE_200)
+      .json({ success: true, message: ORDERS_FETCH_SUCCESS, orders });
+  } catch (error) {
+    console.log("GET THIS RESTAURANT ORDERS", error);
+    res
+      .status(CODE_500)
+      .json({ success: false, message: ERROR_INTERNAL_SERVER_ERROR });
   }
 };
