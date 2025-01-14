@@ -188,7 +188,7 @@ export const useUpdateRestaurantOrderStatus = () => {
   };
 
   const {
-    mutateAsync: updatedRestaurantStatusData,
+    mutateAsync: updateRestaurantStatusData,
     isLoading,
     isError,
     isSuccess,
@@ -201,5 +201,5 @@ export const useUpdateRestaurantOrderStatus = () => {
     reset();
   }
 
-  return { updatedRestaurantStatusData, isLoading };
+  return { updateRestaurantStatusData, isLoading };
 };
