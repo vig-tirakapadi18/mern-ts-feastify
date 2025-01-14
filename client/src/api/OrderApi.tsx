@@ -83,7 +83,9 @@ export const useGetAllOrders = () => {
     isError,
     error,
     isLoading,
-  } = useQuery(["getAllOrders"], getAllOrdersRequest);
+  } = useQuery(["getAllOrders"], getAllOrdersRequest, {
+    refetchInterval: 30000,
+  });
 
   if (isError || error) {
     console.log(error);

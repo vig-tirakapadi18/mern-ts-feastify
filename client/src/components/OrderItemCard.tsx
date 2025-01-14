@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { IOrder } from "../types";
+import React, { FC, useEffect, useState } from "react";
+import { IOrder, OrderStatus } from "../types";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
 import { Badge } from "./ui/badge";
@@ -12,12 +12,31 @@ import {
   SelectValue,
 } from "./ui/select";
 import { ORDER_STATUS } from "../config/orderStatus";
+import { useUpdateRestaurantOrderStatus } from "../api/RestaurantApi";
 
 interface IOrderItemCardProps {
   order: IOrder;
 }
 
 const OrderItemCard: FC<IOrderItemCardProps> = ({ order }) => {
+  const { updateRestaurantStatusData, isLoading } =
+    useUpdateRestaurantOrderStatus();
+
+  const [status, setStatus] = useState<OrderStatus>(order.status);
+
+  useEffect(() => {
+    setStatus(order.status);
+  }, [order.status]);
+
+  const handleStatusChange = async (newStatus: OrderStatus) => {
+    await updateRestaurantStatusData({
+      orderId: order._id as string,
+      status: newStatus,
+    });
+
+    setStatus(newStatus);
+  };
+
   const getTime = () => {
     const orderDateTime = new Date(order.createdAt);
 
@@ -78,7 +97,11 @@ const OrderItemCard: FC<IOrderItemCardProps> = ({ order }) => {
         <div className="flex flex-col space-y-1.5">
           <Label htmlFor="status">What is the status of this order?</Label>
 
-          <Select>
+          <Select
+            value={status}
+            disabled={isLoading}
+            onValueChange={(value) => handleStatusChange(value as OrderStatus)}
+          >
             <SelectTrigger id="status">
               <SelectValue placeholder="Status" />
 
