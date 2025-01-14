@@ -1,23 +1,9 @@
 import { Request, Response } from "express";
 import {
   booleanValues,
-  CODE_200,
-  CODE_201,
-  CODE_401,
-  CODE_404,
-  CODE_409,
-  CODE_500,
-  ERROR_INTERNAL_SERVER_ERROR,
-  ERROR_ORDER_NOT_FOUND,
-  ERROR_RESTAURANT_NOT_FOUND,
-  ERROR_RESTAURANT_NOT_FOUND_ID,
-  ERROR_UNAUTHORIZED,
-  ERROR_USER_RESTAURANT_EXISTS,
-  ORDERS_FETCH_SUCCESS,
-  RESTAURANT_CREATE_SUCCESS,
-  RESTAURANT_GET_SUCCESS,
-  RESTAURANT_UPDATE_SUCCESS,
-  STATUS_UPDATE_SUCCESS,
+  errorMessages,
+  statusCodes,
+  successMessages,
 } from "../utils/constants";
 import Restaurant from "../models/restaurant.model";
 import { Types } from "mongoose";
@@ -29,7 +15,9 @@ export const createRestaurant = async (req: Request, res: Response) => {
     const existingRestaurant = await Restaurant.findOne({ user: req.userId });
 
     if (existingRestaurant) {
-      res.status(CODE_409).json({ message: ERROR_USER_RESTAURANT_EXISTS });
+      res
+        .status(statusCodes.code409)
+        .json({ message: errorMessages.userRestaurantExists });
       return;
     }
 
@@ -42,14 +30,16 @@ export const createRestaurant = async (req: Request, res: Response) => {
       lastUpdated: new Date(),
     });
 
-    res.status(CODE_201).json({
+    res.status(statusCodes.code201).json({
       success: true,
       restaurant,
-      message: RESTAURANT_CREATE_SUCCESS,
+      message: successMessages.restaurantCreate,
     });
   } catch (error) {
     console.log("CREATE REST", error);
-    res.status(CODE_500).json({ message: ERROR_INTERNAL_SERVER_ERROR });
+    res
+      .status(statusCodes.code500)
+      .json({ message: errorMessages.internalServerError });
   }
 };
 
@@ -62,19 +52,21 @@ export const getLoggedInUserRestaurant = async (
 
     if (!restaurant) {
       res
-        .status(CODE_404)
-        .json({ success: false, message: ERROR_RESTAURANT_NOT_FOUND });
+        .status(statusCodes.code404)
+        .json({ success: false, message: errorMessages.restaurantNotFound });
       return;
     }
 
-    res
-      .status(CODE_200)
-      .json({ success: true, restaurant, message: RESTAURANT_GET_SUCCESS });
+    res.status(statusCodes.code200).json({
+      success: true,
+      restaurant,
+      message: successMessages.restaurantGet,
+    });
   } catch (error) {
     console.log("GET RESTAURANT", error);
     res
-      .status(CODE_500)
-      .json({ success: false, message: ERROR_INTERNAL_SERVER_ERROR });
+      .status(statusCodes.code500)
+      .json({ success: false, message: errorMessages.internalServerError });
   }
 };
 
@@ -83,7 +75,9 @@ export const updateRestaurant = async (req: Request, res: Response) => {
     const restaurant = await Restaurant.findOne({ user: req.userId });
 
     if (!restaurant) {
-      res.status(CODE_404).json({ message: ERROR_RESTAURANT_NOT_FOUND });
+      res
+        .status(statusCodes.code404)
+        .json({ message: errorMessages.restaurantNotFound });
       return;
     }
 
@@ -103,12 +97,16 @@ export const updateRestaurant = async (req: Request, res: Response) => {
 
     await restaurant.save();
 
-    res
-      .status(CODE_200)
-      .json({ success: true, restaurant, message: RESTAURANT_UPDATE_SUCCESS });
+    res.status(statusCodes.code200).json({
+      success: true,
+      restaurant,
+      message: successMessages.restaurantUpdate,
+    });
   } catch (error) {
     console.log("UPDATE RESTAURANT", error);
-    res.status(CODE_500).json({ message: ERROR_INTERNAL_SERVER_ERROR });
+    res
+      .status(statusCodes.code500)
+      .json({ message: errorMessages.internalServerError });
   }
 };
 
@@ -116,7 +114,9 @@ export const getRestaurantById = async (req: Request, res: Response) => {
   const { restaurantId } = req.params;
 
   if (!restaurantId) {
-    res.status(CODE_404).json({ message: ERROR_RESTAURANT_NOT_FOUND_ID });
+    res
+      .status(statusCodes.code404)
+      .json({ message: errorMessages.restaurantNotFound });
     return;
   }
 
@@ -124,16 +124,22 @@ export const getRestaurantById = async (req: Request, res: Response) => {
     const restaurant = await Restaurant.findById(restaurantId);
 
     if (!restaurant) {
-      res.status(CODE_404).json({ message: ERROR_RESTAURANT_NOT_FOUND_ID });
+      res
+        .status(statusCodes.code404)
+        .json({ message: errorMessages.restaurantNotFound });
       return;
     }
 
-    res
-      .status(CODE_200)
-      .json({ success: true, restaurant, message: RESTAURANT_GET_SUCCESS });
+    res.status(statusCodes.code200).json({
+      success: true,
+      restaurant,
+      message: successMessages.restaurantGet,
+    });
   } catch (error) {
     console.log("GET RESTAURANT BY ID", error);
-    res.status(CODE_404).json({ message: ERROR_RESTAURANT_NOT_FOUND_ID });
+    res
+      .status(statusCodes.code404)
+      .json({ message: errorMessages.restaurantNotFound });
   }
 };
 
@@ -143,8 +149,8 @@ export const getThisRestaurantOrders = async (req: Request, res: Response) => {
 
     if (!restaurant) {
       res
-        .status(CODE_404)
-        .json({ success: false, message: ERROR_RESTAURANT_NOT_FOUND });
+        .status(statusCodes.code404)
+        .json({ success: false, message: errorMessages.restaurantNotFound });
       return;
     }
 
@@ -152,16 +158,16 @@ export const getThisRestaurantOrders = async (req: Request, res: Response) => {
       .populate("restaurant")
       .populate("user");
 
-    res.status(CODE_200).json({
+    res.status(statusCodes.code200).json({
       success: booleanValues.trueValue,
       orders,
-      message: ORDERS_FETCH_SUCCESS,
+      message: successMessages.restaurantGet,
     });
   } catch (error) {
     console.log("GET THIS RESTAURANT ORDERS", error);
-    res.status(CODE_500).json({
+    res.status(statusCodes.code500).json({
       success: booleanValues.falseValue,
-      message: ERROR_INTERNAL_SERVER_ERROR,
+      message: errorMessages.internalServerError,
     });
   }
 };
@@ -172,9 +178,9 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
   const order = await Order.findById(orderId);
 
   if (!order) {
-    res.status(CODE_404).json({
+    res.status(statusCodes.code404).json({
       success: booleanValues.falseValue,
-      message: ERROR_ORDER_NOT_FOUND,
+      message: errorMessages.orderNotFound,
     });
     return;
   }
@@ -182,17 +188,18 @@ export const updateOrderStatus = async (req: Request, res: Response) => {
   const restaurant = await Restaurant.findById(order.restaurant);
 
   if (restaurant?.user?._id.toString() !== req.userId) {
-    res
-      .status(CODE_401)
-      .json({ success: booleanValues.falseValue, message: ERROR_UNAUTHORIZED });
+    res.status(statusCodes.code401).json({
+      success: booleanValues.falseValue,
+      message: errorMessages.unauthorized,
+    });
   }
 
   order.status = req.body.status;
   await order.save();
 
-  res.status(CODE_200).json({
+  res.status(statusCodes.code200).json({
     success: booleanValues.trueValue,
-    message: STATUS_UPDATE_SUCCESS,
+    message: successMessages.statusUpdate,
     order,
   });
 };

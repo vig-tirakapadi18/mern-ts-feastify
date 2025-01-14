@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import {
-  CODE_200,
-  CODE_404,
-  ERROR_SEARCH_RESTAURANTS,
-  RESTAURANT_GET_SUCCESS,
+  errorMessages,
+  statusCodes,
+  successMessages,
 } from "../utils/constants";
 import { FilterQuery } from "mongoose";
 import Restaurant from "../models/restaurant.model";
@@ -24,7 +23,7 @@ export const searchRestaurants = async (req: Request, res: Response) => {
     const cityCheck = await Restaurant.countDocuments(query);
 
     if (cityCheck === 0) {
-      res.status(CODE_404).json({
+      res.status(statusCodes.code404).json({
         success: true,
         response: {
           data: [],
@@ -80,10 +79,14 @@ export const searchRestaurants = async (req: Request, res: Response) => {
     };
 
     res
-      .status(CODE_200)
-      .json({ success: true, response, message: RESTAURANT_GET_SUCCESS });
+      .status(statusCodes.code200)
+      .json({
+        success: true,
+        response,
+        message: successMessages.restaurantGet,
+      });
   } catch (error) {
     console.log("SEARCH RESTAURANT", error);
-    res.status(500).json({ message: ERROR_SEARCH_RESTAURANTS });
+    res.status(500).json({ message: errorMessages.searchRestaurants });
   }
 };

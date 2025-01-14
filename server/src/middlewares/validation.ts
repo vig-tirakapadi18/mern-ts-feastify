@@ -1,11 +1,5 @@
 import { body, param, validationResult } from "express-validator";
-import {
-  ADDRESS_STRING,
-  CITY_STRING,
-  CODE_400,
-  COUNTRY_STRING,
-  NAME_STRING,
-} from "../utils/constants";
+import { formValidationErrorMessages, statusCodes } from "../utils/constants";
 import { NextFunction, Request, Response } from "express";
 
 const handleValidationErrors = async (
@@ -16,43 +10,61 @@ const handleValidationErrors = async (
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    res.status(CODE_400).json({ errors });
+    res.status(statusCodes.code400).json({ errors });
     return;
   }
   next();
 };
 
 export const validateUserRequest = [
-  body("name").isString().notEmpty().withMessage(NAME_STRING),
-  body("addressLine1").isString().notEmpty().withMessage(ADDRESS_STRING),
-  body("city").isString().notEmpty().withMessage(CITY_STRING),
-  body("country").isString().notEmpty().withMessage(COUNTRY_STRING),
+  body("name")
+    .isString()
+    .notEmpty()
+    .withMessage(formValidationErrorMessages.nameString),
+  body("addressLine1")
+    .isString()
+    .notEmpty()
+    .withMessage(formValidationErrorMessages.addressString),
+  body("city")
+    .isString()
+    .notEmpty()
+    .withMessage(formValidationErrorMessages.cityString),
+  body("country")
+    .isString()
+    .notEmpty()
+    .withMessage(formValidationErrorMessages.countryString),
   handleValidationErrors,
 ];
 
 export const validateRestaurantRequest = [
-  body("restaurantName").notEmpty().withMessage("Restaurant name is required!"),
-  body("city").notEmpty().withMessage("City is required!"),
-  body("country").notEmpty().withMessage("Country is required!"),
+  body("restaurantName")
+    .notEmpty()
+    .withMessage(formValidationErrorMessages.restaurantRequired),
+  body("city").notEmpty().withMessage(formValidationErrorMessages.cityRequired),
+  body("country")
+    .notEmpty()
+    .withMessage(formValidationErrorMessages.countryRequired),
   body("deliveryPrice")
     .isFloat({ min: 0 })
-    .withMessage("Delivery price must be a positive number!"),
+    .withMessage(formValidationErrorMessages.deliveryPricePositive),
   body("estimatedDeliveryTime")
     .isInt({ min: 0 })
-    .withMessage("Estimated delivery time must be a positive integer!"),
+    .withMessage(formValidationErrorMessages.estimatedDeliveryTimePositive),
   body("cuisines")
     .isArray()
-    .withMessage("Cuisines must be an array!")
+    .withMessage(formValidationErrorMessages.cuisinesArray)
     .not()
     .isEmpty()
-    .withMessage("Cuisines array can not be empty!"),
-  body("menuItems").isArray().withMessage("Menu items must be an array!"),
+    .withMessage(formValidationErrorMessages.cuisinesArrayNotEmpty),
+  body("menuItems")
+    .isArray()
+    .withMessage(formValidationErrorMessages.menuItemsArray),
   body("menuItems.*.name")
     .notEmpty()
-    .withMessage("Menu item name is required!"),
+    .withMessage(formValidationErrorMessages.menuItemRequired),
   body("menuItems.*.price")
     .isFloat({ min: 0 })
-    .withMessage("Menu item price is required and must be a positive integer!"),
+    .withMessage(formValidationErrorMessages.menuItemRequiredAndString),
   handleValidationErrors,
 ];
 
@@ -61,5 +73,5 @@ export const validateParam = (paramName: string) => {
     .isString()
     .trim()
     .notEmpty()
-    .withMessage("Parameter must be a valid string!");
+    .withMessage(formValidationErrorMessages.parameterString);
 };

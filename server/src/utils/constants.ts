@@ -1,49 +1,64 @@
-export const CODE_200: number = 200;
-export const CODE_201: number = 201;
-export const CODE_400: number = 400;
-export const CODE_401: number = 401;
-export const CODE_403: number = 403;
-export const CODE_404: number = 404;
-export const CODE_409: number = 409;
-export const CODE_500: number = 500;
+export const statusCodes = {
+  code200: 200,
+  code201: 201,
+  code400: 400,
+  code401: 401,
+  code403: 403,
+  code404: 404,
+  code409: 409,
+  code500: 500,
+};
 
-export const ERROR_INTERNAL_SERVER_ERROR: string = "Internal Server Error!";
-export const ERROR_UNAUTHORIZED: string = "Unauthorized user!";
-export const ERROR_USER_EXISTS: string = "User already exists!";
-export const ERROR_USER_CREATE: string = "Error creating user!";
-export const ERROR_USER_UPDATE: string = "Error updating user!";
-export const ERROR_USER_NOT_FOUND: string = "User not found!";
-export const ERROR_GETTING_USER: string = "Error getting user!";
-export const ERROR_USER_RESTAURANT_EXISTS: string =
-  "Restaurant for this user already exists!";
-export const ERROR_RESTAURANT_NOT_FOUND: string =
-  "Restaurant for this user not found!";
-export const ERROR_SEARCH_RESTAURANTS: string = "Unable to search restaurants!";
-export const ERROR_RESTAURANT_NOT_FOUND_ID: string =
-  "Restaurant not found for a given ID!";
-export const ERROR_STRIPE_SESSION: string = "Failed to create session!";
-export const ERROR_ORDER_NOT_FOUND: string = "Order not found!";
-export const ERROR_ORDERS_FOR_USER_NOT_FOUND: string =
-  "Orders for user not found!";
-export const ERROR_ORDER_STATUS: string = "Unable to update order status!";
+export const errorMessages = {
+  internalServerError: "Internal Server Error!",
+  unauthorized: "Unauthorized user!",
+  userExists: "User already exists!",
+  userCreate: "Error creating user!",
+  userUpdate: "Error updating user!",
+  userNotFound: "User not found!",
+  gettingUser: "Error getting user!",
+  userRestaurantExists: "Restaurant for this user already exists!",
+  restaurantNotFound: "Restaurant for this user not found!",
+  searchRestaurants: "Unable to search restaurants!",
+  restaurantNotFoundById: "Restaurant not found for a given ID!",
+  stripeSession: "Failed to create session!",
+  orderNotFound: "Order not found!",
+  ordersForUserNotFound: "Orders for user not found!",
+  orderStatus: "Unable to update order status!",
+};
 
-export const USER_CREATE_SUCCESS: string = "User created successfully!";
-export const USER_UPDATE_SUCCESS: string = "User updated successfully!";
-export const USER_GET_SUCCESS: string = "User retrieved successfully!";
-export const NAME_STRING: string = "Name must be a string!";
-export const ADDRESS_STRING: string = "Address must be a string!";
-export const CITY_STRING: string = "City must be a string!";
-export const COUNTRY_STRING: string = "Country must be a string!";
-export const EMAIL_STRING: string = "Email must be a valid email!";
-export const RESTAURANT_CREATE_SUCCESS: string =
-  "Restaurant created successfully!";
-export const RESTAURANT_GET_SUCCESS: string =
-  "Restaurant retrieved successfully!";
-export const RESTAURANT_UPDATE_SUCCESS: string =
-  "Restaurant updated successfully!";
-export const SESSION_CREATE_SUCCESS: string = "Session created successfully!";
-export const ORDERS_FETCH_SUCCESS: string = "Oredrs fetched successfully!";
-export const STATUS_UPDATE_SUCCESS: string = "Status updated successfully!";
+export const successMessages = {
+  userCreate: "User created successfully!",
+  userUpdate: "User updated successfully!",
+  userGet: "User retrieved successfully!",
+  restaurantCreate: "Restaurant created successfully!",
+  restaurantGet: "Restaurant retrieved successfully!",
+  restaurantUpdate: "Restaurant updated successfully!",
+  sessionCreate: "Session created successfully!",
+  ordersFetch: "Orders fetched successfully!",
+  statusUpdate: "Status updated successfully!",
+};
+
+export const formValidationErrorMessages = {
+  nameString: "Name must be a string!",
+  addressString: "Address must be a string!",
+  cityString: "City must be a string!",
+  countryString: "Country must be a string!",
+  emailString: "Email must be a valid email!",
+  restaurantRequired: "Restaurant name is required!",
+  cityRequired: "City is required!",
+  countryRequired: "Country is required!",
+  deliveryPricePositive: "Delivery price must be a positive number!",
+  estimatedDeliveryTimePositive:
+    "Estimated delivery time must be a positive integer!",
+  cuisinesArray: "Cuisines must be an array!",
+  menuItemsArray: "Menu items must be an array!",
+  menuItemRequired: "Menu item name is required!",
+  cuisinesArrayNotEmpty: "Cuisines array can not be empty!",
+  menuItemRequiredAndString:
+    "Menu item price is required and must be a positive integer!",
+  parameterString: "Parameter must be a valid string!",
+};
 
 export const booleanValues = {
   trueValue: true,
